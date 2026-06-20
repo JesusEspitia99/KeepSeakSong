@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis de Competencia — ForeverSong vs PrayerSong</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Georgia', serif; background: #fafafa; color: #1a1a2e; font-size: 14px; line-height: 1.7; }
+.cover { min-height: 100vh; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 40px; page-break-after: always; }
+.cover-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #e0e0e0; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; padding: 8px 24px; border-radius: 20px; margin-bottom: 40px; font-family: Arial, sans-serif; }
+.cover h1 { font-size: 42px; color: #ffffff; font-weight: bold; line-height: 1.2; margin-bottom: 20px; }
+.cover h2 { font-size: 22px; color: #a8c4e0; font-weight: normal; margin-bottom: 50px; }
+.cover-divider { width: 80px; height: 3px; background: linear-gradient(90deg, #e8845c, #d4506a); margin: 0 auto 40px; }
+.cover-stats { display: flex; gap: 60px; justify-content: center; margin-bottom: 60px; flex-wrap: wrap; }
+.cover-stat { text-align: center; }
+.cover-stat .num { font-size: 36px; font-weight: bold; color: #ffffff; }
+.cover-stat .label { font-size: 11px; color: #a8c4e0; letter-spacing: 2px; text-transform: uppercase; font-family: Arial, sans-serif; margin-top: 4px; }
+.cover-meta { font-size: 12px; color: #7a9abf; font-family: Arial, sans-serif; }
+.section-page { page-break-before: always; }
+.section-header { padding: 50px 60px 40px; color: white; }
+.section-header.forever { background: linear-gradient(135deg, #c94b8a 0%, #e8496a 100%); }
+.section-header.prayer { background: linear-gradient(135deg, #8B3A0A 0%, #c4602a 100%); }
+.section-header.comparative { background: linear-gradient(135deg, #1a3a5c 0%, #1a6a8a 100%); }
+.section-header .label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.8; margin-bottom: 12px; font-family: Arial, sans-serif; }
+.section-header h1 { font-size: 36px; font-weight: bold; margin-bottom: 12px; }
+.section-header .meta { font-size: 13px; opacity: 0.85; font-family: Arial, sans-serif; }
+.section-header .meta span { margin-right: 20px; }
+.content { padding: 50px 60px; }
+.paso { margin-bottom: 40px; page-break-inside: avoid; }
+.paso-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; border-bottom: 2px solid #f0f0f0; padding-bottom: 12px; }
+.paso-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; color: white; flex-shrink: 0; font-family: Arial, sans-serif; }
+.paso-num.forever { background: #c94b8a; }
+.paso-num.prayer { background: #8B3A0A; }
+.paso-num.comp { background: #1a3a5c; }
+.paso-title { font-size: 18px; font-weight: bold; color: #1a1a2e; }
+.paso-subtitle { font-size: 12px; color: #888; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 1px; }
+.data-block { border-left: 4px solid #ddd; padding: 16px 20px; margin-bottom: 16px; border-radius: 0 6px 6px 0; background: #f8f8f8; }
+.data-block.forever { border-left-color: #c94b8a; background: #fdf0f5; }
+.data-block.prayer { border-left-color: #8B3A0A; background: #fdf5f0; }
+.data-block.comp { border-left-color: #1a3a5c; background: #f0f5fd; }
+.data-block.highlight { border-left-color: #f59e0b; background: #fffbeb; }
+.data-block.danger { border-left-color: #dc2626; background: #fef2f2; }
+.data-block.success { border-left-color: #16a34a; background: #f0fdf4; }
+.data-block h4 { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; font-family: Arial, sans-serif; color: #555; }
+.data-block p { font-size: 13px; color: #333; margin-bottom: 6px; }
+.data-block ul { padding-left: 18px; }
+.data-block ul li { font-size: 13px; color: #333; margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+th { background: #1a1a2e; color: white; padding: 12px 16px; text-align: left; font-family: Arial, sans-serif; font-size: 12px; letter-spacing: 0.5px; }
+th.forever-th { background: #c94b8a; }
+th.prayer-th { background: #8B3A0A; }
+td { padding: 10px 16px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+tr:nth-child(even) td { background: #fafafa; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-family: Arial, sans-serif; font-weight: bold; }
+.tag.green { background: #dcfce7; color: #16a34a; }
+.tag.red { background: #fee2e2; color: #dc2626; }
+.tag.yellow { background: #fef9c3; color: #ca8a04; }
+.tag.blue { background: #dbeafe; color: #1d4ed8; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.insight { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; }
+.insight h4 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #a8c4e0; margin-bottom: 12px; font-family: Arial, sans-serif; }
+.insight ul { padding-left: 20px; }
+.insight ul li { font-size: 13px; color: #e0e0e0; margin-bottom: 6px; }
+@media print { body { font-size: 12px; } .cover { page-break-after: always; min-height: auto; padding: 40px; } .section-page { page-break-before: always; } .paso { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-badge">Inteligencia Competitiva — Framework Quiz Sales Page Analysis</div>
+  <h1>ForeverSong vs PrayerSong</h1>
+  <h2>Análisis Profundo de Funnels, Quizzes y Estrategias de Venta</h2>
+  <div class="cover-divider"></div>
+  <div class="cover-stats">
+    <div class="cover-stat"><div class="num">700+</div><div class="label">Anuncios Activos<br>ForeverSong</div></div>
+    <div class="cover-stat"><div class="num">2000+</div><div class="label">Anuncios Activos<br>PrayerSong</div></div>
+    <div class="cover-stat"><div class="num">15</div><div class="label">Pasos del<br>Framework</div></div>
+    <div class="cover-stat"><div class="num">3</div><div class="label">Análisis<br>Completos</div></div>
+  </div>
+  <div class="cover-meta">KeepSeekSong · Análisis de Competencia · Junio 2026</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ANÁLISIS #1: FOREVERSONG -->
+<!-- ============================================================ -->
+<div class="section-page">
+  <div class="section-header forever">
+    <div class="label">Análisis #1 de 3 · Framework Quiz Sales Page · Pasos 0–15</div>
+    <h1>ForeverSong</h1>
+    <div class="meta">
+      <span>foreversongstudio.com</span>
+      <span>700+ anuncios activos</span>
+      <span>$0 visible en landing (modelo free preview)</span>
+      <span>35,000+ clientes · 4.9/5 de 3,723 reviews</span>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">0</div>
+        <div><div class="paso-title">Datos Generales del Competidor</div><div class="paso-subtitle">Overview · Modelo · Escala</div></div>
+      </div>
+      <div class="grid2">
+        <div class="data-block forever">
+          <h4>Identidad de Marca</h4>
+          <ul>
+            <li><strong>Nombre:</strong> ForeverSong</li>
+            <li><strong>URL:</strong> foreversongstudio.com</li>
+            <li><strong>Tagline:</strong> "The #1 Custom Song Platform"</li>
+            <li><strong>Propuesta core:</strong> Canciones personalizadas para regalos emocionales</li>
+            <li><strong>Nicho:</strong> Universal (sin identidad religiosa)</li>
+          </ul>
+        </div>
+        <div class="data-block forever">
+          <h4>Datos de Negocio</h4>
+          <ul>
+            <li><strong>Anuncios activos Meta:</strong> 700+</li>
+            <li><strong>Modelo:</strong> FREE PREVIEW primero → pago posterior</li>
+            <li><strong>Precio:</strong> Oculto en landing (solo visible post-preview)</li>
+            <li><strong>Velocidad:</strong> "Delivered within 24 hours"</li>
+            <li><strong>Clientes:</strong> 35,000+ familias</li>
+            <li><strong>Reviews:</strong> 4.9/5 de 3,723 resenas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">1</div>
+        <div><div class="paso-title">Propuesta de Valor y Hero Section</div><div class="paso-subtitle">H1 · Subheadline · Tagline · Primera Impresión</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Copy Exacto de la Landing Page</h4>
+        <ul>
+          <li><strong>Tagline:</strong> "The #1 Custom Song Platform"</li>
+          <li><strong>H1:</strong> "Turn your memories into a custom song they'll never forget"</li>
+          <li><strong>Subheadline:</strong> "The most personal gift you'll ever give."</li>
+          <li><strong>Propuesta adicional:</strong> "Takes 2 minutes. Just the name, a few memories, and how you want it to feel."</li>
+          <li><strong>Garantia en hero:</strong> "100% FREE preview — no card required"</li>
+          <li><strong>Proceso visible:</strong> (1) Tell us your story → (2) We create your song → (3) Hear your free preview</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Insight Clave: Memoria + Permanencia como Hook</h4>
+        <p>El H1 apela a la <strong>memoria y permanencia</strong> ("never forget"). No vende una cancion — vende un legado emocional. "They'll never forget" activa el miedo a no haber dicho lo suficiente y el deseo de ser recordado para siempre.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">2</div>
+        <div><div class="paso-title">Senales de Confianza (Trust Stack)</div><div class="paso-subtitle">Social Proof · Credibilidad · Autoridad</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Arquitectura de Confianza</h4>
+        <ul>
+          <li><strong>Escala:</strong> "Loved by 35,000+ families" (numero masivo, muy especifico)</li>
+          <li><strong>Rating:</strong> "4.9 avg from 3,723 reviews" (casi perfecto, muy alto volumen)</li>
+          <li><strong>Calidad:</strong> "Radio-quality song"</li>
+          <li><strong>Garantia:</strong> "Happiness guarantee / Not happy? We'll make it right"</li>
+          <li><strong>Cero riesgo:</strong> "100% FREE preview — no card required"</li>
+          <li><strong>Testimoniales:</strong> 13+ resenas con nombres reales y situaciones especificas</li>
+          <li><strong>Cita de cliente:</strong> "Worth way more than the price"</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Tactica Diferencial: Volumen como Credibilidad</h4>
+        <p>ForeverSong NO necesita logos de medios porque tiene <strong>volumen masivo de reviews genuinas</strong> (3,723). La cantidad ES la credibilidad. La prueba social por volumen supera a la prueba social por autoridad mediatica en este nicho de regalos emocionales.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">3</div>
+        <div><div class="paso-title">Arquitectura del Funnel y Quiz</div><div class="paso-subtitle">Tipo de Quiz · Estructura · Flujo</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Estructura del Funnel</h4>
+        <ul>
+          <li><strong>Tipo:</strong> POPUP MODAL en la landing page (NO full page)</li>
+          <li><strong>Pasos:</strong> 5 steps + Thank You page</li>
+          <li><strong>Progreso:</strong> Dots numerados (1 2 3 4 5) + "Step X of 5 | Autosaved"</li>
+          <li><strong>Anti-abandono:</strong> "Autosaved" en cada paso (reduce ansiedad de perdida)</li>
+          <li><strong>Personalizacion activa:</strong> El nombre del destinatario aparece en TODOS los pasos del quiz desde Step 1</li>
+          <li><strong>Tiempo estimado:</strong> "Takes 2 minutes"</li>
+        </ul>
+      </div>
+      <div class="data-block success">
+        <h4>Por que funciona el popup modal</h4>
+        <p>El popup tiene menor friccion de entrada vs full page: el usuario no "sale" de la landing, no siente que esta iniciando un proceso largo. Desventaja: puede cerrarse accidentalmente y tiene menor inmersion visual que una pagina completa dedicada.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">4</div>
+        <div><div class="paso-title">Step 1 del Quiz — Primera Pregunta</div><div class="paso-subtitle">Segmentacion · Opciones · Primera Impresion del Quiz</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Step 1: "Who is this song for?"</h4>
+        <ul>
+          <li><strong>6 opciones con iconos emoji:</strong> Partner ♥ · Child · Parent · Friend · Myself · Someone else</li>
+          <li><strong>Campo de nombre:</strong> "What's their name?"</li>
+          <li><strong>Expectativa de output:</strong> "This will be used in the song lyrics" (crea anticipacion inmediata del producto)</li>
+          <li><strong>CTA del paso:</strong> "Continue" (rosa/salmon, pill-shaped)</li>
+          <li><strong>Progreso:</strong> "Step 1 of 5 | Autosaved"</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>"Someone else" — El Move Brillante</h4>
+        <p>La opcion "Someone else" abre el funnel a regalos corporativos, mentores, coaches, y destinatarios no convencionales. Amplía el TAM sin cambiar el producto ni el funnel. Ninguno de sus competidores directos ofrece esta opcion de forma tan inclusiva.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">5</div>
+        <div><div class="paso-title">Step 2 — Seleccion de Estilo Musical</div><div class="paso-subtitle">Vibe · Genero · Voz · Triple Segmentacion UNICA</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Step 2: "Choose the vibe & genre"</h4>
+        <p><strong>Seccion 1 — Vibe (6 opciones emocionales con emojis):</strong></p>
+        <ul><li>Sweet · Emotional · Funny · Upbeat · Calm · Romantic</li></ul>
+        <p style="margin-top:8px"><strong>Seccion 2 — Genero (7 opciones, pill buttons):</strong></p>
+        <ul><li>Pop · Country · Rock · R&B · Jazz · Acoustic · Lullaby</li></ul>
+        <p style="margin-top:8px"><strong>Seccion 3 — Voz del cantante (3 opciones):</strong></p>
+        <ul><li>Female · Male · No preference</li></ul>
+      </div>
+      <div class="data-block success">
+        <h4>Insight: La seleccion de "vibe" es UNICA en el mercado</h4>
+        <p>Ningun competidor separa el <em>estado emocional</em> del <em>genero musical</em>. Esta doble segmentacion sirve dos propositos: (1) genera datos unicos de personalizacion que mejoran el producto, (2) la seleccion de vibe activa un estado emocional en el usuario que potencia la conversion posterior al pago.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">6</div>
+        <div><div class="paso-title">Steps 3 y 4 — Personalizacion Profunda</div><div class="paso-subtitle">Traits · Memorias · Friccion Reducida</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Step 3: "What makes [Name] special?"</h4>
+        <ul>
+          <li><strong>Subtitulo:</strong> "Their best qualities, quirks, and what you love about them"</li>
+          <li><strong>Placeholder:</strong> "Describe what makes [Name] unique... For example: Their infectious laugh / How they always know the right thing to say"</li>
+          <li><strong>Contador gamificado:</strong> "More details = more personal song | 0 chars"</li>
+          <li><strong>Tip box:</strong> "Consider including: Personality traits / Habits or quirks that make you smile"</li>
+        </ul>
+      </div>
+      <div class="data-block forever">
+        <h4>Step 4: "Share your favorite memories (optional)"</h4>
+        <ul>
+          <li><strong>Subtitulo:</strong> "Add specific moments to make the song even more personal"</li>
+          <li><strong>Escape hatch:</strong> "Skip if you're not sure what to write" (elimina friccion de completar)</li>
+          <li><strong>Tip box:</strong> "Great memories to include: First dates or special occasions / Inside jokes only you understand"</li>
+          <li><strong>Icono:</strong> Camara fotografia (visualizacion de momentos)</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Tactica: Permiso para ser Imperfecto</h4>
+        <p>La combinacion de "(optional)" en el titulo + "Skip if you're not sure" en el cuerpo reduce dramaticamente el abandono en Step 4. El usuario no siente presion de "hacerlo bien". Psicologia: permiso para ser imperfecto = mas completaciones del funnel = mas leads capturados.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">7</div>
+        <div><div class="paso-title">Step 5 — Captura de Email y Conversion Final</div><div class="paso-subtitle">Email Lead Capture · CTA Personalizado · Cierre Emocional</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Step 5: "Message from your heart"</h4>
+        <ul>
+          <li><strong>Pregunta emocional:</strong> "How do you want [Name] to feel when they hear this?"</li>
+          <li><strong>Textarea:</strong> "This guides the emotional core of your song | 0 chars"</li>
+          <li><strong>Email field:</strong> "Your email" → "We'll send your song preview here when it's ready"</li>
+          <li><strong>Checkbox:</strong> "I agree to the Terms and Privacy Policy." (opt-in deliberado)</li>
+          <li><strong>CTA completamente personalizado:</strong> "Create [Name]'s Song"</li>
+        </ul>
+      </div>
+      <div class="data-block success">
+        <h4>Email en el Momento de Maxima Inversion Emocional</h4>
+        <p>El email se captura despues de que el usuario ha invertido tiempo describiendo a su persona querida, eligiendo memorias, y pensando en sus mejores cualidades. En este momento de maximo engagement emocional, la tasa de completacion del campo email es significativamente mas alta que al inicio del quiz. El CTA "Create [Name]'s Song" personalizado con el nombre es el cierre de conversion mas potente posible.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">8</div>
+        <div><div class="paso-title">Thank You Page — El Modelo Free Preview</div><div class="paso-subtitle">Post-Quiz · Expectativas · Modelo de Negocio</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Thank You Page: "We're crafting your song for [Name]..."</h4>
+        <ul>
+          <li><strong>Subtitulo:</strong> "Our team is now reading your story and writing lyrics just for [Name]."</li>
+          <li><strong>Expectativa de tiempo:</strong> "Expect your preview within 24 hours" + "We'll email you at [email]"</li>
+          <li><strong>Checklist de proceso:</strong> "We'll read through everything you shared / Our songwriters will craft personalized lyrics / You'll get an email with a preview to listen / Love it? You can get the full song"</li>
+          <li><strong>Request summary:</strong> "For: [Name] (partner) / Vibe: Romantic / Genre: Pop"</li>
+          <li><strong>Monetizacion:</strong> Solo mencionada como "Love it? You can get the full song"</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>El Modelo Free Preview: Lead Generation disfrazada de Producto</h4>
+        <p>El free preview es una tactica de <strong>lead generation disfrazada de producto gratuito</strong>. El usuario "construye" mentalmente su cancion durante el quiz → recibe el preview 24h despues → ya tiene el producto en sus manos → comprar es simplemente confirmar algo que ya "tiene". El RIESGO: usuarios sin intencion de pagar pueden usar el servicio y generar costos sin convertir.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">9</div>
+        <div><div class="paso-title">Arquitectura de la Oferta</div><div class="paso-subtitle">Precio · Presentacion · Timing del Revenue</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Estructura de la Oferta</h4>
+        <ul>
+          <li><strong>Precio en landing:</strong> NO visible (eliminacion total de la objecion de precio)</li>
+          <li><strong>Precio en quiz:</strong> NO visible</li>
+          <li><strong>Precio en thank you:</strong> NO visible (solo "get the full song")</li>
+          <li><strong>Precio revelado:</strong> En el email de preview (24h despues del quiz)</li>
+          <li><strong>Garantia:</strong> "Happiness guarantee / Not happy? We'll make it right"</li>
+          <li><strong>Modelo:</strong> Try before you buy</li>
+        </ul>
+      </div>
+      <div class="data-block danger">
+        <h4>Riesgo del Modelo de Oferta</h4>
+        <p>El precio oculto puede aumentar la tasa de inicio del quiz pero reduce la calificacion del lead. Un usuario sin disposicion a pagar completara el quiz, recibira el preview, y nunca comprara. El costo de produccion del preview puede ser alto para leads que no convierten. Ademas, la comparacion de precio post-preview puede llevar a abandono o buyer's remorse.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">10</div>
+        <div><div class="paso-title">Psicologia del Precio</div><div class="paso-subtitle">Inversion Psicologica · Efecto IKEA · Percepcion de Valor</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Mecanismos Psicologicos del Precio</h4>
+        <ul>
+          <li><strong>Sin precio visible:</strong> Elimina la objecion de precio durante el quiz completo</li>
+          <li><strong>Inversion psicologica primero:</strong> El usuario invierte tiempo y emocion ANTES de ver el precio</li>
+          <li><strong>Testimonio de valor:</strong> "Worth way more than the price" (precio percibido alto sin revelar el numero)</li>
+          <li><strong>Ancla de valor:</strong> "Radio-quality song" + "35,000+ families" establecen valor antes del precio</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>El Efecto IKEA aplicado a canciones personalizadas</h4>
+        <p>Al hacer que el usuario complete el quiz y "construya" su cancion, ForeverSong aplica el "IKEA Effect" — las personas valoran mas aquello en lo que invierten tiempo y esfuerzo. Cuando llega el preview, el usuario ya siente que es "su" cancion, y cualquier precio razonable parece justificado para conservarla.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">11</div>
+        <div><div class="paso-title">Urgencia y Escasez</div><div class="paso-subtitle">Presion Temporal · Scarcity · Triggers de Accion</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Tacticas de Urgencia de ForeverSong</h4>
+        <ul>
+          <li><strong>Scarcity de produccion:</strong> "Limited availability / We can only create a limited number each day"</li>
+          <li><strong>Justificacion artesanal:</strong> "Each song is crafted with care. Reserve your spot now."</li>
+          <li><strong>Velocidad como urgencia:</strong> "Delivered within 24 hours" (implica: actua ahora para recibir manana)</li>
+          <li><strong>Sin timer visible:</strong> La escasez es de capacidad (spots), no de tiempo — mas creible</li>
+        </ul>
+      </div>
+      <div class="data-block success">
+        <h4>Urgencia Creible sin Artificios</h4>
+        <p>La escasez de "limited number each day" es altamente creible para un servicio artesanal. No requiere un countdown timer. Es mas autentica y genera menor resistencia psicologica que los timers artificiales. "Crafted with care" justifica la limitacion y eleva la percepcion de calidad al mismo tiempo.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">12</div>
+        <div><div class="paso-title">Reduccion de Riesgo</div><div class="paso-subtitle">Garantias · Trust · Objeciones</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Stack de Reduccion de Riesgo</h4>
+        <ul>
+          <li><strong>Riesgo financiero eliminado:</strong> "100% FREE preview — no card required"</li>
+          <li><strong>Riesgo de calidad:</strong> "Happiness guarantee / Not happy? We'll make it right"</li>
+          <li><strong>Riesgo de tiempo:</strong> "Takes 2 minutes" (bajo costo de oportunidad)</li>
+          <li><strong>Riesgo de velocidad:</strong> "Delivered within 24 hours"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">13</div>
+        <div><div class="paso-title">Copy y Voz de Marca</div><div class="paso-subtitle">Tono · Lenguaje · Persuasion</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Analisis del Copy</h4>
+        <ul>
+          <li><strong>Tono:</strong> Warm, inclusive, universal, emotionally intelligent</li>
+          <li><strong>Audiencia:</strong> Millennials/Gen X que regalan a personas queridas (25-45 anos)</li>
+          <li><strong>Keywords emocionales:</strong> memories, personal, forever, never forget, heart, special</li>
+          <li><strong>Anti-keywords:</strong> SIN referencia a fe, religion, Dios — mercado maximamente amplio</li>
+          <li><strong>Gamificacion:</strong> "More details = more personal song" (contador de caracteres)</li>
+          <li><strong>Anti-ansiedad:</strong> "Autosaved" en cada step del quiz</li>
+          <li><strong>Emojis frecuentes:</strong> Coded para audiencia 25-45 anos, casual y accesible</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">14</div>
+        <div><div class="paso-title">Diseno Visual y UX</div><div class="paso-subtitle">Colores · Tipografia · Experiencia de Usuario</div></div>
+      </div>
+      <div class="data-block forever">
+        <h4>Analisis de Diseno</h4>
+        <ul>
+          <li><strong>Color primario:</strong> Rosa/salmon (#E8496A range) — warmth, romance, femininity, love</li>
+          <li><strong>Fondo quiz:</strong> Blanco muy claro — limpio, moderno, sin distracciones</li>
+          <li><strong>Tipografia:</strong> Sans-serif moderna — accesible, millennial</li>
+          <li><strong>Progreso quiz:</strong> Dots numerados (1-5) — menos intimidante que barra de porcentaje</li>
+          <li><strong>Formato:</strong> Popup modal — menor friccion de entrada vs full page</li>
+          <li><strong>Iconos:</strong> Emojis universales — casual, accesible, no pretencioso</li>
+          <li><strong>Tips:</strong> Cajas amarillas con icono de luz — amigables, educativas</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num forever">15</div>
+        <div><div class="paso-title">Insights Clave y Tacticas Transferibles</div><div class="paso-subtitle">Sintesis · Fortalezas · Debilidades · Oportunidades</div></div>
+      </div>
+      <div class="data-block success">
+        <h4>Fortalezas de ForeverSong</h4>
+        <ul>
+          <li>Modelo free preview elimina friccion de precio → maxima tasa de inicio del quiz</li>
+          <li>35,000+ clientes / 4.9 estrellas de 3,723 reviews → prueba social masiva muy creible</li>
+          <li>Seleccion unica de "vibe" separada del genero → diferenciador exclusivo en el mercado</li>
+          <li>"Someone else" como opcion de destinatario → mayor TAM, incluye gifting corporativo</li>
+          <li>"Autosaved" en cada step → reduce abandono mid-quiz significativamente</li>
+          <li>Universalidad del producto → mercado masivo sin segmentacion excluyente</li>
+          <li>Gamificacion del counter → leads con descripciones mas ricas y mejores outputs</li>
+        </ul>
+      </div>
+      <div class="data-block danger">
+        <h4>Debilidades de ForeverSong</h4>
+        <ul>
+          <li>Sin logos de medios mainstream → menor autoridad percibida vs competidores con prensa</li>
+          <li>Precio completamente oculto → puede generar leads no calificados que nunca compran</li>
+          <li>Modelo free preview requiere produccion de canciones para no-compradores (costo elevado)</li>
+          <li>Sin diferenciacion de nicho → vulnerable a competidores especializados como PrayerSong</li>
+          <li>Popup modal puede cerrarse accidentalmente → friccion negativa</li>
+          <li>Sin audio demo en la landing → el visitante no puede verificar calidad antes de iniciar</li>
+        </ul>
+      </div>
+      <div class="insight">
+        <h4>Top 8 Tacticas Transferibles de ForeverSong a KeepSeekSong</h4>
+        <ul>
+          <li>Adoptar el contador "More details = better song" para motivar respuestas largas y ricas</li>
+          <li>Usar "Autosaved" en cada step para reducir abandono mid-quiz</li>
+          <li>Capturar email en el momento de maxima inversion emocional (ultimo step del quiz)</li>
+          <li>Anadir "Takes X minutes" al inicio del quiz (reduce friccion de entrada)</li>
+          <li>Anadir "Someone else" como opcion de destinatario (ampliar TAM)</li>
+          <li>Usar scarcity de capacidad ("only X songs per day") como urgencia creible y artesanal</li>
+          <li>Personalizar el CTA final con el nombre: "Create [Name]'s Song"</li>
+          <li>Step de "vibe" separado del genero para generar datos emocionales unicos</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ANÁLISIS #2: PRAYERSONG -->
+<!-- ============================================================ -->
+<div class="section-page">
+  <div class="section-header prayer">
+    <div class="label">Análisis #2 de 3 · Framework Quiz Sales Page · Pasos 0–15</div>
+    <h1>PrayerSong</h1>
+    <div class="meta">
+      <span>prayersong.com</span>
+      <span>2,000+ anuncios activos</span>
+      <span>$99 USD (50% OFF anclado desde $199)</span>
+      <span>1,000+ clientes · 623+ reviews Trustpilot Excellent</span>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">0</div>
+        <div><div class="paso-title">Datos Generales del Competidor</div><div class="paso-subtitle">Overview · Modelo · Escala</div></div>
+      </div>
+      <div class="grid2">
+        <div class="data-block prayer">
+          <h4>Identidad de Marca</h4>
+          <ul>
+            <li><strong>Nombre:</strong> PrayerSong</li>
+            <li><strong>URL:</strong> prayersong.com</li>
+            <li><strong>Tagline:</strong> "Turn Your Prayers and Stories Into a Song"</li>
+            <li><strong>Posicionamiento:</strong> "THE #1 CUSTOM SONG PLATFORM"</li>
+            <li><strong>Nicho:</strong> Canciones personalizadas con identidad cristiana/fe</li>
+          </ul>
+        </div>
+        <div class="data-block prayer">
+          <h4>Datos de Negocio</h4>
+          <ul>
+            <li><strong>Anuncios activos Meta:</strong> 2,000+ (3x ForeverSong)</li>
+            <li><strong>Modelo:</strong> Pago UPFRONT ($99) → entrega en 7 dias</li>
+            <li><strong>Precio base:</strong> $99 USD (50% OFF desde $199)</li>
+            <li><strong>Precio prioritario:</strong> +$59 para entrega en 24 horas</li>
+            <li><strong>Entrega estandar:</strong> June 20 (7 dias)</li>
+            <li><strong>Reviews:</strong> 623+ en Trustpilot (Excellent 4.5/5)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">1</div>
+        <div><div class="paso-title">Propuesta de Valor y Hero Section</div><div class="paso-subtitle">H1 · Subheadline · Hero Visual · Urgencia</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Copy Exacto de la Landing Page</h4>
+        <ul>
+          <li><strong>Banner de urgencia (toda la anchura):</strong> "Father's Day Sale Ends Soon! — Start Now →"</li>
+          <li><strong>Tagline:</strong> "THE #1 CUSTOM SONG PLATFORM"</li>
+          <li><strong>H1 (TESTIMONIAL como headline):</strong> "This PrayerSong Brought Me To Tears!"</li>
+          <li><strong>Subheadline:</strong> "Order your PrayerSong by end of today to get it delivered by Father's Day."</li>
+          <li><strong>CTA principal:</strong> "Start My Custom PrayerSong" (icono regalo)</li>
+          <li><strong>Sub-CTA:</strong> "Delivered With Love, Prayer, & Care On June 20"</li>
+        </ul>
+      </div>
+      <div class="data-block prayer">
+        <h4>Hero Visual</h4>
+        <ul>
+          <li><strong>Tipo:</strong> Video UGC raw/natural — NO produccion, NO actores</li>
+          <li><strong>Contenido:</strong> Mujer abrazando a hombre mayor que llora — intimo, sin poses, muy real</li>
+          <li><strong>Impacto:</strong> Activa "llanto vicario" — el visitante siente la emocion antes de leer una palabra</li>
+          <li><strong>Overlay:</strong> "Listen to Example" (permite escuchar una cancion antes del quiz)</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Insight Clave: Testimonial como H1 — Pattern Interrupt Maximo</h4>
+        <p>El H1 NO es copy de marketing — es una <strong>cita de cliente en primera persona, entre comillas</strong>. Nadie espera que el headline sea un testimonio. Este pattern interrupt hace que el cerebro del visitante pause y procese la emocion antes de activar el filtro racional. Es uno de los H1s mas disruptivos en el espacio de regalos personalizados de todo el mercado.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">2</div>
+        <div><div class="paso-title">Senales de Confianza (Trust Stack)</div><div class="paso-subtitle">Medios · Reviews · Garantias · Autoridad Mediatica</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Arquitectura de Confianza Multi-capa</h4>
+        <ul>
+          <li><strong>Medios mainstream:</strong> CBS NEWS · FOX · AOL · yahoo/life (logos visibles)</li>
+          <li><strong>Reviews externas verificadas:</strong> "Excellent 4.5/5 — 623+ reviews on Trustpilot"</li>
+          <li><strong>Escala:</strong> "Over 1,000 satisfied customers"</li>
+          <li><strong>Garantia visual:</strong> Sello "100% Guaranteed" (estilo wax seal) + "Love it, or your money back."</li>
+          <li><strong>Detalle de garantia:</strong> "30-day refund · no questions asked."</li>
+          <li><strong>Nombres de canciones con titulo:</strong> "God Gave Me You", "Sent to Me from God", "Saving Grace" → los titulos activan credibilidad especifica</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Logos de Medios como Trust Anchor de Primera Capa</h4>
+        <p>CBS NEWS + FOX establece <strong>legitimidad institucional</strong> en milisegundos. Para un visitante nuevo, ver medios nacionales crea un atajo cognitivo de confianza que ningun numero de reviews de clientes puede replicar tan rapidamente. Es confianza prestada de marcas con 50+ anos de credibilidad.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">3</div>
+        <div><div class="paso-title">Arquitectura del Funnel y Quiz</div><div class="paso-subtitle">Tipo · Flujo Completo · Pre-checkout · Checkout</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Estructura del Funnel Completo (7 Etapas)</h4>
+        <ul>
+          <li><strong>Tipo de quiz:</strong> FULL PAGE en /create (NO popup)</li>
+          <li><strong>Pasos del quiz:</strong> 5 steps</li>
+          <li><strong>Progreso:</strong> Barra visual roja + "Step X of 5 | X% Complete"</li>
+          <li><strong>Etapa unica (buffer):</strong> Pre-checkout page entre quiz y pago</li>
+          <li><strong>Email capture:</strong> En el checkout (NO durante el quiz)</li>
+          <li><strong>Precio reveal:</strong> En el checkout, DESPUES del email</li>
+          <li><strong>Upsell:</strong> Priority delivery +$59 despues del checkout principal</li>
+        </ul>
+      </div>
+      <div class="data-block success">
+        <h4>La Pre-Checkout Page: Buffer Estrategico de Prueba Social</h4>
+        <p>Despues de completar el quiz, el usuario llega a "You're just a few clicks away from ordering your PrayerSong!" con testimoniales en audio de canciones reales. Esta pagina actua como <strong>confirmacion social antes del precio reveal</strong>, aumentando el commitment y reduciendo el precio shock antes del checkout de $99.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">4</div>
+        <div><div class="paso-title">Step 1 del Quiz — Primera Pregunta</div><div class="paso-subtitle">Segmentacion · 11 Opciones · Tip de Pronunciacion</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Step 1: "Let's start with the basics" — "Tell us about the special person in your life"</h4>
+        <ul>
+          <li><strong>11 opciones (sin iconos, pill buttons limpios):</strong> Husband · Wife · Children · Mother · Father · Girlfriend · Boyfriend · Sibling · Friend · Myself · Other</li>
+          <li><strong>Campo de nombre:</strong> "What's their name?" → "Enter their first name"</li>
+          <li><strong>Feature UNICA en el mercado:</strong> "Tip: add pronunciation for clarity (e.g. Alicia: ah-lee-sha)"</li>
+          <li><strong>Progreso:</strong> Step 1 of 5 | 20% Complete (barra roja/terracota)</li>
+          <li><strong>Legal:</strong> "By continuing, you agree to our Terms of Service and Privacy Policy."</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>El Tip de Pronunciacion: Senal de Calidad Artesanal Incomparable</h4>
+        <p>Ningun competidor en el mercado pide la pronunciacion del nombre. Este micro-detalle comunica tres cosas de forma implicita: (1) hay humanos reales leyendo esto, no solo IA, (2) el nombre del destinatario sera cantado correctamente, (3) el proceso es tan personalizado que incluso la pronunciacion importa. Aumenta dramaticamente la percepcion de cuidado artesanal con una sola linea de texto.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">5</div>
+        <div><div class="paso-title">Step 2 — Seleccion de Genero y Voz</div><div class="paso-subtitle">Generos · Sin Vibe · El Diferenciador "Worship"</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Step 2: "Choose a Genre"</h4>
+        <p><strong>Preferred Genre* (7 opciones, pill buttons):</strong></p>
+        <ul><li>Pop · Country · Rock · R&B · Jazz · <strong>Worship</strong> · <strong>Rap / Hip-Hop</strong></li></ul>
+        <p style="margin-top:8px"><strong>Voice (3 opciones):</strong></p>
+        <ul><li>Female Voice · Male Voice · No Preference</li></ul>
+        <p style="margin-top:8px"><strong>AUSENTE vs ForeverSong:</strong> Sin seleccion de "vibe" (Sweet/Emotional/Funny/Calm/Romantic)</p>
+      </div>
+      <div class="data-block highlight">
+        <h4>"Worship" como Marcador de Identidad de Tribu</h4>
+        <p>La opcion "Worship" como genero es el marcador de identidad cristiana mas explicito del quiz. No dice "religious" ni "gospel" — dice "Worship", el termino exacto que usa la comunidad cristiana evangelica. Es una senal de tribu: el visitante cristiano que ve "Worship" en la lista siente que este servicio fue creado especificamente para su comunidad.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">6</div>
+        <div><div class="paso-title">Steps 3, 4 y 5 — Personalizacion Socratica</div><div class="paso-subtitle">Preguntas Abiertas · Fe · Profundidad Emocional</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Step 3: "What makes them special?"</h4>
+        <ul>
+          <li><strong>Placeholder:</strong> "Are they patient, wise, funny, encouraging, <strong>Godly</strong>? What makes them an incredible person to you?"</li>
+          <li><strong>Clave:</strong> "Godly" en el placeholder es el segundo marcador de identidad cristiana en el quiz</li>
+        </ul>
+      </div>
+      <div class="data-block prayer">
+        <h4>Step 4: "Share your favorite memories"</h4>
+        <ul>
+          <li><strong>Placeholder:</strong> "What memories do you always come back to? A moment you laugh about every time? Something you went through together that brought you closer?"</li>
+          <li><strong>Tecnica:</strong> 3 preguntas Socraticas en secuencia — cada una activa un tipo diferente de memoria</li>
+          <li><strong>Sin ejemplos prescriptivos</strong> (vs ForeverSong que da "That trip where we got lost")</li>
+        </ul>
+      </div>
+      <div class="data-block prayer">
+        <h4>Step 5: "A message from your heart"</h4>
+        <ul>
+          <li><strong>Subtitulo:</strong> "Write anything else that you feel..."</li>
+          <li><strong>Placeholder:</strong> "What do you want them to know, that you've never said enough? What do you want to thank them for? What is that one thing from your heart you want to say to them?"</li>
+          <li><strong>AUSENTE:</strong> Sin campo de email en el quiz (se captura en checkout)</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Preguntas Socraticas vs Ejemplos Prescriptivos</h4>
+        <p>PrayerSong hace preguntas abiertas que obligan al usuario a reflexionar profundamente, en lugar de dar ejemplos que el usuario puede copiar. Genera respuestas mas autenticas y personales. Filosofia implicita: PrayerSong confia en que su cliente tiene algo profundo que decir — solo necesita que alguien le haga la pregunta correcta.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">7</div>
+        <div><div class="paso-title">Pre-Checkout y Checkout Page</div><div class="paso-subtitle">Buffer Social · Precio Reveal · Scarcity · CTA Final</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Pre-Checkout Page</h4>
+        <ul>
+          <li><strong>Headline:</strong> "You're just a few clicks away from ordering your PrayerSong!"</li>
+          <li><strong>Testimoniales con audio:</strong> "God Gave Me You" (Wendy B.) · "Three Squeezes and a Miracle" · "My Heart is Yours" · "Chosen Hearts" (Markeeta B.)</li>
+          <li><strong>Garantia:</strong> "30-Day Money-Back Guarantee" visible antes del precio</li>
+          <li><strong>Media logos:</strong> CBS NEWS · FOX · AOL · Yahoo Life</li>
+          <li><strong>CTA:</strong> "Continue to checkout"</li>
+        </ul>
+      </div>
+      <div class="data-block prayer">
+        <h4>Checkout Page: "Almost There! Complete Your Order"</h4>
+        <ul>
+          <li><strong>Scarcity:</strong> "ONLY A FEW SPOTS LEFT"</li>
+          <li><strong>Urgencia festiva:</strong> "Order today to get your song in time for Father's Day!"</li>
+          <li><strong>Email capture:</strong> "Your Email Address" → "Create My Song" (CTA directo)</li>
+          <li><strong>Order summary:</strong> "Song for: [Name] / Delivery: June 20"</li>
+          <li><strong>PRECIO:</strong> "Custom Song — 50% OFF — $199 → $99 USD"</li>
+          <li><strong>Justificacion de precio:</strong> "Our songs typically cost $199, but we believe every father deserves to be honored for just $99 USD for a limited time only."</li>
+          <li><strong>Upsell post-checkout:</strong> "Need it sooner? You can upgrade to 24-hour priority delivery after checkout." (+$59)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">8</div>
+        <div><div class="paso-title">Captura de Email</div><div class="paso-subtitle">Cuando · Como · Calidad del Lead</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Estrategia de Captura de Email</h4>
+        <ul>
+          <li><strong>Momento de captura:</strong> En el CHECKOUT (despues de completar los 5 pasos + pre-checkout page)</li>
+          <li><strong>Campo:</strong> "Your Email Address" → placeholder "you@email.com"</li>
+          <li><strong>CTA directo:</strong> "Create My Song" (el email activa la compra)</li>
+          <li><strong>Sin lead magnet separado:</strong> El email esta vinculado directamente al pago</li>
+          <li><strong>Sin opt-in de marketing:</strong> El email se captura como dato del pedido</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>Ventaja Estrategica: Email de Maxima Calidad</h4>
+        <p>El usuario que llega al checkout ha completado 5 steps del quiz + visto testimoniales en audio + aceptado el precio de $99. El email capturado en este punto pertenece a un lead con la <strong>maxima intencion de compra posible</strong>. Calidad de lead significativamente superior al email capturado a mitad del quiz (ForeverSong), donde la intencion de pago era desconocida.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">9</div>
+        <div><div class="paso-title">Arquitectura de la Oferta</div><div class="paso-subtitle">Precio · Modelo de Pago · Upsell</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Estructura de la Oferta</h4>
+        <ul>
+          <li><strong>Precio base:</strong> $99 USD (presentado como "50% OFF" desde $199)</li>
+          <li><strong>Anclaje agresivo:</strong> $199 como "precio regular" → $99 parece ganga</li>
+          <li><strong>Justificacion de mision:</strong> "We believe every father deserves to be honored for just $99 USD"</li>
+          <li><strong>Urgencia de precio:</strong> "for a limited time only" → el precio puede subir</li>
+          <li><strong>Upsell:</strong> +$59 para entrega en 24 horas (mencionado como opcion post-checkout)</li>
+          <li><strong>Total con upsell:</strong> $158 USD</li>
+          <li><strong>Garantia:</strong> "Love it, or your money back. 30-day guarantee. No questions asked."</li>
+        </ul>
+      </div>
+      <div class="data-block success">
+        <h4>"We believe" — Copy de Mision como Justificacion de Precio</h4>
+        <p>PrayerSong no justifica el precio con features — lo justifica con una <strong>declaracion de mision</strong>. "We believe" posiciona a la empresa como una organizacion con proposito. Para su audiencia cristiana, esto resuena profundamente: no estas comprando un producto, estas honrando a tu padre de una manera que la empresa valida moralmente.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">10</div>
+        <div><div class="paso-title">Psicologia del Precio</div><div class="paso-subtitle">Anclaje · Descuento · Percepcion de Valor</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Mecanismos Psicologicos del Precio</h4>
+        <ul>
+          <li><strong>Anclaje agresivo:</strong> $199 tachado → $99 se percibe como oportunidad excepcional</li>
+          <li><strong>Label "50% OFF":</strong> El porcentaje de descuento es mas motivador que la cantidad ahorrada ($100)</li>
+          <li><strong>Framing de escasez temporal:</strong> "for a limited time only" → el precio puede subir pronto</li>
+          <li><strong>Inversion psicologica previa:</strong> 5 steps del quiz + pre-checkout page → el usuario ya "construyo" su producto antes de ver el precio</li>
+          <li><strong>Commitment escalation:</strong> El email se pide antes de mostrar el precio → micro-compromiso que aumenta conversion</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">11</div>
+        <div><div class="paso-title">Urgencia y Escasez — 5 Capas Coordinadas</div><div class="paso-subtitle">Presion Temporal · Fecha Festiva · Scarcity de Produccion</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Stack de Urgencia de PrayerSong (5 Capas)</h4>
+        <ul>
+          <li><strong>Capa 1 — Banner permanente:</strong> "Father's Day Sale Ends Soon! — Start Now →" (visible en TODO el sitio)</li>
+          <li><strong>Capa 2 — Subheadline:</strong> "Order by end of today" (subrayado en naranja, imposible de ignorar)</li>
+          <li><strong>Capa 3 — Fecha de entrega:</strong> "Delivery: June 20" (concreta, especifica, 3+ veces en la landing)</li>
+          <li><strong>Capa 4 — Fecha festiva:</strong> "Father's Day" (italica) como deadline emocional irremplazable</li>
+          <li><strong>Capa 5 — Scarcity de produccion:</strong> "ONLY A FEW SPOTS LEFT" en checkout (muy creible para servicio artesanal)</li>
+        </ul>
+      </div>
+      <div class="data-block highlight">
+        <h4>La Fecha Festiva como Urgencia Imbatible</h4>
+        <p>Ningun timer artificial puede competir con la urgencia del Dia del Padre. La cancion TIENE que llegar para la fecha — no hay alternativa. PrayerSong convierte una limitacion logistica (entrega en 7 dias) en una <strong>herramienta de urgencia maxima</strong>. El visitante no puede postergar sin perder el regalo en la unica fecha que importa.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">12</div>
+        <div><div class="paso-title">Reduccion de Riesgo</div><div class="paso-subtitle">Garantias · Trust · Eliminacion de Objeciones</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Stack de Reduccion de Riesgo (4 veces en el checkout)</h4>
+        <ul>
+          <li><strong>Copy emocional:</strong> "Love it, or your money back." (no legal, no fria)</li>
+          <li><strong>Periodo generoso:</strong> "30-day refund" (30 dias para un producto de entrega en 7)</li>
+          <li><strong>Proceso claro:</strong> "No questions asked, no hassle" (elimina objecion del proceso)</li>
+          <li><strong>Label directo:</strong> "Risk-free purchase"</li>
+          <li><strong>Enfoque en cliente:</strong> "Your satisfaction is our priority"</li>
+        </ul>
+      </div>
+      <div class="data-block danger">
+        <h4>Riesgo: Pago Upfront sin Preview</h4>
+        <p>A diferencia de ForeverSong, PrayerSong pide $99 ANTES de que el cliente escuche su cancion personalizada. La garantia de 30 dias mitiga el riesgo, pero el proceso de solicitar reembolso por un producto digital puede generar hesitacion en el momento de checkout. Este es el punto de mayor friccion en el funnel de PrayerSong.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">13</div>
+        <div><div class="paso-title">Copy y Voz de Marca</div><div class="paso-subtitle">Tono · Fe · Comunidad · Lenguaje</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Analisis del Copy</h4>
+        <ul>
+          <li><strong>Tono:</strong> Fe cristiana + emocion familiar + mision comunitaria</li>
+          <li><strong>Audiencia:</strong> Familias cristianas de 30-60 anos</li>
+          <li><strong>Keywords de tribu cristiana:</strong> prayer, God, Godly, bless, heart, breathtaking, praise, worship</li>
+          <li><strong>Keywords emocionales universales:</strong> tears, love, special, beautiful, miracle, miracle</li>
+          <li><strong>"We believe" language:</strong> Mision, no transaccion comercial</li>
+          <li><strong>Testimoniales con lenguaje de fe:</strong> "Oh praise God!", "Absolutely breathtaking"</li>
+          <li><strong>Entrega enmarcada como servicio:</strong> "Delivered With Love, Prayer, & Care" (no logistica, no "7 business days")</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">14</div>
+        <div><div class="paso-title">Diseno Visual y UX</div><div class="paso-subtitle">Colores · Tipografia · Quiz UX · Experiencia</div></div>
+      </div>
+      <div class="data-block prayer">
+        <h4>Analisis de Diseno</h4>
+        <ul>
+          <li><strong>Color primario:</strong> Terracota/burnt orange — calidez, fe, tierra, tradicion</li>
+          <li><strong>Fondo quiz:</strong> Cream/vainilla — mas calido que el blanco frio de ForeverSong</li>
+          <li><strong>Tipografia:</strong> Serif para headings/logo (tradicion, autoridad, elegancia) + sans-serif para formulario</li>
+          <li><strong>Logo:</strong> "PrayerSong" en script cursiva italica (artesanal, personal, no corporativo)</li>
+          <li><strong>Progreso:</strong> Barra visual roja + porcentaje numerico (mas informativo que los dots)</li>
+          <li><strong>Formato quiz:</strong> Full page (mayor inmersion, sin distraccion del sitio)</li>
+          <li><strong>Hero:</strong> Video UGC raw (NO stock) — autenticidad maxima que activa emocion vicaria</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num prayer">15</div>
+        <div><div class="paso-title">Insights Clave y Tacticas Transferibles</div><div class="paso-subtitle">Sintesis · Fortalezas · Debilidades · Oportunidades</div></div>
+      </div>
+      <div class="data-block success">
+        <h4>Fortalezas de PrayerSong</h4>
+        <ul>
+          <li>3x mas anuncios que ForeverSong → mayor escala de adquisicion y presupuesto validado por el mercado</li>
+          <li>Testimonial como H1 → pattern interrupt maximo, diferenciador visual unico</li>
+          <li>Nicho cristiano claro → comunidad de alta fidelidad y word-of-mouth orgánico activo</li>
+          <li>Logos de medios mainstream (CBS, FOX) → credibilidad institucional inmediata</li>
+          <li>Pre-checkout page con audio → demo antes del precio, buffer de prueba social</li>
+          <li>Tip de pronunciacion → senal de calidad artesanal sin igual en el mercado</li>
+          <li>5 capas de urgencia coordinadas → presion de compra muy bien ejecutada</li>
+          <li>Precio visible y anclado ($99 desde $199) → califica leads por disposicion de pago</li>
+          <li>Trustpilot como plataforma externa verificada → credibilidad de reviews independiente</li>
+        </ul>
+      </div>
+      <div class="data-block danger">
+        <h4>Debilidades de PrayerSong</h4>
+        <ul>
+          <li>Pago upfront sin preview → mayor friccion en checkout, posible buyer hesitation</li>
+          <li>Entrega estandar en 7 dias → inferior a ForeverSong's 24h sin costo adicional</li>
+          <li>Sin seleccion de "vibe" → personalizacion emocional menos granular</li>
+          <li>Nicho cristiano exclusivo → excluye mercado secular y otros grupos de fe</li>
+          <li>Solo 623 reviews vs 3,723 de ForeverSong → menor volumen de prueba social</li>
+          <li>Sin gamificacion del quiz (contador de caracteres, autosaved) → mayor riesgo de abandono</li>
+        </ul>
+      </div>
+      <div class="insight">
+        <h4>Top 8 Tacticas Transferibles de PrayerSong a KeepSeekSong</h4>
+        <ul>
+          <li>Usar un testimonial emocional como H1 (entre comillas, primera persona — no copy de marketing)</li>
+          <li>Crear una pre-checkout page con demos de audio ANTES del precio reveal</li>
+          <li>Anadir tip de pronunciacion en el campo de nombre (senal de calidad artesanal unica)</li>
+          <li>"ONLY A FEW SPOTS LEFT" como scarcity de produccion artesanal en el checkout</li>
+          <li>Obtener cobertura de medios mainstream como trust builder de primera capa</li>
+          <li>Registrar en Trustpilot (plataforma externa verificada) en lugar de solo reviews propias</li>
+          <li>Enmarcar la entrega como "Love, Care & Craft" en lugar de "7 business days"</li>
+          <li>"We believe" language para posicionarse como mision, no solo negocio transaccional</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ANÁLISIS #3: COMPARATIVO -->
+<!-- ============================================================ -->
+<div class="section-page">
+  <div class="section-header comparative">
+    <div class="label">Análisis #3 de 3 · Inteligencia Competitiva · Análisis Cruzado</div>
+    <h1>ForeverSong vs PrayerSong</h1>
+    <div class="meta">
+      <span>Analisis comparativo en 8 dimensiones clave</span>
+      <span>Oportunidades para KeepSeekSong</span>
+    </div>
+  </div>
+  <div class="content">
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">1</div>
+        <div><div class="paso-title">Tabla Comparativa Maestra</div><div class="paso-subtitle">Head-to-Head en 22 Dimensiones</div></div>
+      </div>
+      <table>
+        <tr><th>Dimension</th><th class="forever-th">ForeverSong</th><th class="prayer-th">PrayerSong</th></tr>
+        <tr><td><strong>Anuncios activos Meta</strong></td><td>700+</td><td><strong>2,000+ (3x)</strong></td></tr>
+        <tr><td><strong>Modelo de negocio</strong></td><td>Free preview → pago posterior</td><td>Pago upfront $99</td></tr>
+        <tr><td><strong>Precio visible en landing</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">Si — $99</span></td></tr>
+        <tr><td><strong>Velocidad estandar</strong></td><td><strong>24 horas</strong></td><td>7 dias (June 20)</td></tr>
+        <tr><td><strong>Velocidad prioritaria</strong></td><td>No mencionada</td><td>24h por +$59</td></tr>
+        <tr><td><strong>Clientes totales</strong></td><td><strong>35,000+</strong></td><td>1,000+</td></tr>
+        <tr><td><strong>Volumen de reviews</strong></td><td><strong>3,723 resenas</strong></td><td>623 reviews</td></tr>
+        <tr><td><strong>Rating promedio</strong></td><td><strong>4.9/5</strong></td><td>4.5/5 Trustpilot</td></tr>
+        <tr><td><strong>Plataforma de reviews</strong></td><td>Propia (Google implied)</td><td><strong>Trustpilot (externo)</strong></td></tr>
+        <tr><td><strong>Logos de medios</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">CBS, FOX, AOL, Yahoo</span></td></tr>
+        <tr><td><strong>Tipo de quiz</strong></td><td>Popup modal</td><td><strong>Full page</strong></td></tr>
+        <tr><td><strong>Opciones de destinatario</strong></td><td>6 opciones</td><td><strong>11 opciones</strong></td></tr>
+        <tr><td><strong>Seleccion de vibe</strong></td><td><strong>Si (6 vibes)</strong></td><td>No</td></tr>
+        <tr><td><strong>Genero "Worship"</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">Si — nicho cristiano</span></td></tr>
+        <tr><td><strong>Captura de email</strong></td><td>Step 5 del quiz</td><td>Checkout (post-quiz)</td></tr>
+        <tr><td><strong>Pre-checkout buffer</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">Si — con demos de audio</span></td></tr>
+        <tr><td><strong>Tip de pronunciacion</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">Si — unico en mercado</span></td></tr>
+        <tr><td><strong>Gamificacion quiz</strong></td><td><span class="tag green">Si — contador + autosaved</span></td><td><span class="tag red">No</span></td></tr>
+        <tr><td><strong>Demo de audio en landing</strong></td><td><span class="tag red">No</span></td><td><span class="tag green">Si — "Listen to Example"</span></td></tr>
+        <tr><td><strong>Capas de urgencia</strong></td><td>2 capas</td><td><strong>5 capas coordinadas</strong></td></tr>
+        <tr><td><strong>H1 convencional vs disruptivo</strong></td><td>Convencional (propuesta de valor)</td><td><strong>Disruptivo (testimonial)</strong></td></tr>
+        <tr><td><strong>Presupuesto implícito de ads</strong></td><td>Medio</td><td><strong>Alto (3x)</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">2</div>
+        <div><div class="paso-title">Clash de Modelos de Negocio</div><div class="paso-subtitle">Free Preview vs Pago Upfront — Trade-offs Estrategicos</div></div>
+      </div>
+      <div class="grid2">
+        <div class="data-block forever">
+          <h4>ForeverSong: Free Preview Model</h4>
+          <p><strong>Ventajas:</strong></p>
+          <ul>
+            <li>Cero friccion en la entrada → maxima tasa de inicio del quiz</li>
+            <li>Sin objecion de precio durante el quiz</li>
+            <li>"Try before you buy" elimina el riesgo percibido</li>
+            <li>El preview crea attachment emocional antes del precio</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Desventajas:</strong></p>
+          <ul>
+            <li>Leads no calificados por precio → costo de produccion alto</li>
+            <li>Monetizacion diferida 24h → abandono posible en el medio</li>
+            <li>El usuario puede comparar precios mientras espera el preview</li>
+          </ul>
+        </div>
+        <div class="data-block prayer">
+          <h4>PrayerSong: Pago Upfront Model</h4>
+          <p><strong>Ventajas:</strong></p>
+          <ul>
+            <li>Revenue inmediato por cada completacion del funnel</li>
+            <li>Leads auto-calificados por disposicion a pagar $99</li>
+            <li>Email capturado de compradores reales (maxima calidad)</li>
+            <li>Sin riesgo de abandono post-preview</li>
+          </ul>
+          <p style="margin-top:8px"><strong>Desventajas:</strong></p>
+          <ul>
+            <li>Mayor friccion → menor tasa de inicio del quiz</li>
+            <li>Precio visible puede asustar a leads potenciales</li>
+            <li>Sin preview → requiere mas confianza a priori</li>
+          </ul>
+        </div>
+      </div>
+      <div class="data-block comp">
+        <h4>El Modelo Hibrido Optimo para KeepSeekSong</h4>
+        <p>El modelo hibrido mas inteligente: <strong>preview instantaneo de 30 segundos generado en tiempo real al finalizar el quiz → email capture → pago para la cancion completa</strong>. Combina la eliminacion de friccion de ForeverSong (el usuario escucha algo) con la calificacion de leads de PrayerSong (el usuario ya tiene intencion de pago). El fragmento generativo inmediato convierte el pago en una confirmacion, no en una apuesta.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">3</div>
+        <div><div class="paso-title">Mapa de Posicionamiento</div><div class="paso-subtitle">Quien Esta Ganando y Por Que</div></div>
+      </div>
+      <div class="data-block comp">
+        <h4>En Volumen de Adquisicion Pagada: PrayerSong gana (+)</h4>
+        <p>Con 3x mas anuncios activos, PrayerSong esta en una fase de escala agresiva. Su presupuesto de ads es significativamente mayor, sugiriendo que su modelo de $99 upfront genera suficiente revenue para reinvertir masivamente en adquisicion. El ROI de sus ads esta validado por el mercado.</p>
+      </div>
+      <div class="data-block comp">
+        <h4>En Prueba Social por Volumen: ForeverSong gana (+)</h4>
+        <p>3,723 reviews vs 623. ForeverSong lleva mas tiempo en el mercado o ha generado mayor volumen de clientes. Sus 35,000+ familias es una cifra de escala que PrayerSong no puede igualar todavia. Sin embargo, la calidad percibida de las reviews de PrayerSong (Trustpilot externo verificado) puede compensar parcialmente.</p>
+      </div>
+      <div class="data-block comp">
+        <h4>En Diferenciacion de Nicho: PrayerSong gana (+)</h4>
+        <p>El nicho cristiano es un diferenciador de identidad imposible de copiar rapidamente. ForeverSong es un producto generico; PrayerSong es un producto de tribu. Los productos de tribu tienen mayor LTV, mayor word-of-mouth organico, y mayor tolerancia al precio premium.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">4</div>
+        <div><div class="paso-title">Analisis Comparativo del Quiz Design</div><div class="paso-subtitle">Filosofias · Friccion · Personalizacion</div></div>
+      </div>
+      <table>
+        <tr><th>Elemento del Quiz</th><th class="forever-th">ForeverSong</th><th class="prayer-th">PrayerSong</th></tr>
+        <tr><td>Filosofia</td><td>Guiar y ejemplificar (reduce friccion)</td><td>Preguntar y provocar reflexion (mas profundidad)</td></tr>
+        <tr><td>Formato</td><td>Popup modal</td><td>Full page inmersiva</td></tr>
+        <tr><td>Step 1 headline</td><td>"Who is this song for?"</td><td>"Let's start with the basics"</td></tr>
+        <tr><td>Iconos en opciones</td><td>Emojis por categoria (casual)</td><td>Solo texto pill buttons (limpio, formal)</td></tr>
+        <tr><td>Opciones destinatario</td><td>6 + "Someone else"</td><td>11 opciones (mas granular)</td></tr>
+        <tr><td>Step 2 diferenciador</td><td>Vibe (emocional) + genero</td><td>Solo genero (incluye Worship, Rap)</td></tr>
+        <tr><td>Tipo de preguntas texto</td><td>Ejemplos prescriptivos con bullets</td><td>Preguntas Socraticas abiertas</td></tr>
+        <tr><td>Motivacion para escribir mas</td><td>Contador de caracteres gamificado</td><td>Preguntas que generan reflexion profunda</td></tr>
+        <tr><td>Reduccion de friccion</td><td>"Optional" + "Skip if not sure"</td><td>Sin escape hatches explicitas</td></tr>
+        <tr><td>Identidad de fe</td><td>Completamente ausente</td><td>"Godly" + "Worship" — marcadores de tribu</td></tr>
+        <tr><td>Feature unica</td><td>Autosaved + contador caracteres</td><td>Tip de pronunciacion del nombre</td></tr>
+        <tr><td>Anti-abandono</td><td>"Autosaved" en cada step</td><td>Sin equivalente visible</td></tr>
+      </table>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">5</div>
+        <div><div class="paso-title">El White Space — Oportunidades para KeepSeekSong</div><div class="paso-subtitle">Lo que ningun competidor esta haciendo bien todavia</div></div>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 1: Preview Instantaneo Generativo (AI en tiempo real)</h4>
+        <p>ForeverSong hace esperar 24h. PrayerSong pide $99 sin escuchar nada. KeepSeekSong podria ofrecer un fragmento de 15-30 segundos generado por IA en tiempo real al finalizar el quiz y mostrarlo en la pre-checkout page. "Este es el inicio de la cancion de [Nombre]" convierte el pago en una confirmacion, no en una apuesta. Esto combina la eliminacion de riesgo de ForeverSong con el revenue inmediato de PrayerSong.</p>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 2: Speed as USP (Entrega en 1-2 horas)</h4>
+        <p>PrayerSong tarda 7 dias (24h con $59 extra). ForeverSong promete 24h. Un competidor con <strong>entrega garantizada en 1-2 horas</strong> para ocasiones de ultima hora tiene un USP incomparable en el mercado de regalos impulsivos de dias festivos. "Last minute? Your song in 2 hours, guaranteed."</p>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 3: Micro-Niching con Sub-marcas por Comunidad</h4>
+        <p>PrayerSong se enfoca en el nicho cristiano (excluye seculares). ForeverSong no tiene nicho (pierde diferenciacion). Un competidor que cree <strong>sub-experiencias por nicho</strong> (canciones de boda, canciones de pésame, canciones de bebé, canciones latinas, canciones de graduacion) desde una plataforma unica captura multiples comunidades de alta fidelidad con el mismo motor.</p>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 4: Transparencia del Equipo Creativo</h4>
+        <p>Ni ForeverSong ni PrayerSong muestran quienes son los cantantes, compositores, o productores. Un competidor que muestre el equipo humano con nombres reales, fotos, y credentials crea una conexion emocional única y aumenta la disposicion a pagar premium. "Hecho por [Nombre], compositor con 15 anos de experiencia" vs "made by AI + humans".</p>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 5: Trust Stack Superior</h4>
+        <p>ForeverSong no tiene logos de medios. PrayerSong no tiene 3,000+ reviews. KeepSeekSong deberia buscar ambos: <strong>press coverage mainstream + volumen masivo de reviews en Trustpilot + Google + Apple</strong>. La combinacion de autoridad institucional (medios) + autoridad de volumen (reviews verificadas) es el trust stack mas poderoso del mercado. Ningun competidor lo tiene completo.</p>
+      </div>
+      <div class="data-block success">
+        <h4>Oportunidad 6: El Quiz como Herramienta de Auto-descubrimiento</h4>
+        <p>Ambos competidores usan el quiz para recolectar datos de produccion. Ninguno usa el quiz para dar valor al usuario en el proceso. Un quiz que, en cada step, muestra un insight ("Las personas que eligen 'Emotional' para sus padres suelen valorar los momentos silenciosos de conexion...") convierte el formulario en una experiencia memorable que el usuario quiere compartir.</p>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">6</div>
+        <div><div class="paso-title">Top 15 Tacticas Robables — Sintesis Final</div><div class="paso-subtitle">Las mejores ideas de ambos competidores para aplicar ahora</div></div>
+      </div>
+      <div class="insight">
+        <h4>De ForeverSong (700+ ads) — Tacticas 1 a 8</h4>
+        <ul>
+          <li><strong>1.</strong> Seleccion de "vibe" separada del genero — el unico diferenciador de personalizacion emocional en el mercado</li>
+          <li><strong>2.</strong> Contador "More details = more personal song" — gamificacion que aumenta calidad del input y engagement</li>
+          <li><strong>3.</strong> "Autosaved" en cada step — reduce abandono mid-quiz significativamente</li>
+          <li><strong>4.</strong> Captura de email en el momento de maxima inversion emocional (ultimo step)</li>
+          <li><strong>5.</strong> "Takes 2 minutes" al inicio del quiz — reduce friccion de entrada</li>
+          <li><strong>6.</strong> "Someone else" como opcion de destinatario — amplía TAM a gifting corporativo</li>
+          <li><strong>7.</strong> Scarcity de capacidad artesanal ("only X songs per day") — creible y autentico</li>
+          <li><strong>8.</strong> Thank you page con checklist de proceso — reduce ansiedad post-compra con expectativas claras</li>
+        </ul>
+      </div>
+      <div class="insight">
+        <h4>De PrayerSong (2,000+ ads) — Tacticas 9 a 15</h4>
+        <ul>
+          <li><strong>9.</strong> Testimonial como H1 (entre comillas, primera persona) — el pattern interrupt mas disruptivo del mercado</li>
+          <li><strong>10.</strong> Tip de pronunciacion del nombre — micro-senal de calidad artesanal que ningun competidor tiene</li>
+          <li><strong>11.</strong> Pre-checkout page con demos de audio — buffer de prueba social antes del precio reveal</li>
+          <li><strong>12.</strong> "ONLY A FEW SPOTS LEFT" en el checkout — scarcity de produccion que eleva urgencia en el momento de pago</li>
+          <li><strong>13.</strong> Logo de medios mainstream (CBS, FOX) como trust anchor de primera capa</li>
+          <li><strong>14.</strong> Trustpilot como plataforma externa de reviews — credibilidad verificada independientemente</li>
+          <li><strong>15.</strong> "Love it, or your money back" + "No questions asked" — copy emocional de garantia, no legal ni fria</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-header">
+        <div class="paso-num comp">7</div>
+        <div><div class="paso-title">Scoring Competitivo Final</div><div class="paso-subtitle">Evaluacion en 6 Dimensiones Clave</div></div>
+      </div>
+      <table>
+        <tr><th>Categoria</th><th class="forever-th">ForeverSong /10</th><th class="prayer-th">PrayerSong /10</th><th>Ventaja</th></tr>
+        <tr><td><strong>Escala y Volumen de Ads</strong></td><td>6</td><td><strong>9</strong></td><td><span class="tag yellow">PrayerSong</span></td></tr>
+        <tr><td><strong>Trust y Social Proof</strong></td><td><strong>9</strong></td><td>7</td><td><span class="tag blue">ForeverSong</span></td></tr>
+        <tr><td><strong>Diseno del Quiz</strong></td><td><strong>8</strong></td><td>8</td><td>Empate</td></tr>
+        <tr><td><strong>Urgencia y Escasez</strong></td><td>6</td><td><strong>9</strong></td><td><span class="tag yellow">PrayerSong</span></td></tr>
+        <tr><td><strong>Diferenciacion de Nicho</strong></td><td>5</td><td><strong>9</strong></td><td><span class="tag yellow">PrayerSong</span></td></tr>
+        <tr><td><strong>Reduccion de Riesgo</strong></td><td><strong>9</strong></td><td>7</td><td><span class="tag blue">ForeverSong</span></td></tr>
+        <tr><td><strong>PROMEDIO TOTAL</strong></td><td><strong>7.2</strong></td><td><strong>8.2</strong></td><td><span class="tag yellow">PrayerSong (+1 punto)</span></td></tr>
+      </table>
+      <div class="data-block comp">
+        <h4>Conclusion Final</h4>
+        <p>PrayerSong lidera el mercado de canciones personalizadas en 2026 principalmente por su <strong>especializacion de nicho, volumen de adquisicion pagada y arquitectura de urgencia superior</strong>. ForeverSong mantiene su posicion gracias a una <strong>prueba social masiva y un modelo de free preview que elimina la barrera de entrada</strong>. El mercado tiene espacio significativo para un tercer competidor que combine: (1) la reduccion de riesgo de ForeverSong, (2) la identidad de nicho de PrayerSong aplicada a multiples comunidades, y (3) innovaciones de producto que ninguno ofrece aun: preview instantaneo por IA, entrega en horas, y transparencia del equipo creativo.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
