@@ -10,7 +10,7 @@ const TESTIMONIALS = [
 ]
 
 function buildLyricSnippet(data) {
-  const name = data.name || 'you'
+  const name = data.nickname?.trim() || data.name || 'you'
   const trait = data.special?.trim().split(/[.,/]/)[0]?.trim()
   const vibe = (data.vibe || 'this').toLowerCase()
 

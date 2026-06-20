@@ -43,9 +43,9 @@ export default function Step1Recipient({ data, update, onNext }) {
         />
         <input
           type="text"
-          value={data.pronunciation}
-          onChange={(e) => update({ pronunciation: e.target.value })}
-          placeholder="Tip: add pronunciation for clarity (e.g. Alicia: ah-lee-sha)"
+          value={data.nickname}
+          onChange={(e) => update({ nickname: e.target.value })}
+          placeholder="Nickname or pronunciation tip (optional) — e.g. Pecas, or Alicia: ah-lee-sha"
           className="mt-2 w-full rounded-2xl border border-navy-100 px-4 py-2.5 text-sm text-navy-600 placeholder-navy-300 focus:border-gold-400 focus:outline-none focus:ring-2 focus:ring-gold-200"
         />
       </div>
