@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Hero from './components/Hero'
 import HowItWorks from './components/HowItWorks'
 import FeaturedSongs from './components/FeaturedSongs'
+import CustomerTestimonials from './components/CustomerTestimonials'
 import FAQ from './components/FAQ'
 import FinalCTA from './components/FinalCTA'
 import ProgressBar from './components/ProgressBar'
@@ -55,6 +56,7 @@ export default function App() {
           <Hero onStart={startQuiz} />
           <HowItWorks />
           <FeaturedSongs />
+          <CustomerTestimonials />
           <FAQ />
           <FinalCTA onStart={startQuiz} />
         </>
