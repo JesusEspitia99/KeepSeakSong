@@ -12,6 +12,7 @@ import Step3Special from './components/steps/Step3Special'
 import Step4Memories from './components/steps/Step4Memories'
 import Step5Heart from './components/steps/Step5Heart'
 import PreCheckout from './components/PreCheckout'
+import UrgencyBanner from './components/UrgencyBanner'
 import Footer from './components/Footer'
 import Terms from './components/legal/Terms'
 import Privacy from './components/legal/Privacy'
@@ -63,6 +64,7 @@ function Quiz() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-navy-50 via-white to-white">
+      <UrgencyBanner />
       {stage === 'hero' && (
         <>
           <Hero onStart={startQuiz} />

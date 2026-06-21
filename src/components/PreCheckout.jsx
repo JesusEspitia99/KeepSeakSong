@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { HOTMART_CHECKOUT_URL, SONG_PRICE } from '../config'
+import { DISCOUNT_PERCENT, HOTMART_CHECKOUT_URL, ORIGINAL_PRICE, SONG_PRICE } from '../config'
 import { trackEvent } from '../lib/pixel'
 import AudioTestimonial from './AudioTestimonial'
 import { TESTIMONIALS } from '../data/testimonials'
@@ -118,7 +118,10 @@ export default function PreCheckout({ data }) {
         <span>❤️ Love it, or your money back</span>
       </div>
 
-      <p className="mt-6 text-2xl font-semibold text-navy-900">${SONG_PRICE}</p>
+      <p className="mt-6 text-sm font-medium text-gold-600">{DISCOUNT_PERCENT}% off today only</p>
+      <p className="text-2xl font-semibold text-navy-900">
+        <span className="mr-2 text-base text-navy-300 line-through">${ORIGINAL_PRICE}</span>${SONG_PRICE}
+      </p>
       <p className="text-xs text-navy-300">One-time payment, paid securely at checkout</p>
 
       <button

@@ -1,3 +1,5 @@
+import { checkRateLimit, getClientIp } from './_lib/rateLimit.js'
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' })
@@ -7,6 +9,13 @@ export default async function handler(req, res) {
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
     res.status(500).json({ error: 'Server is missing ANTHROPIC_API_KEY' })
+    return
+  }
+
+  const ip = getClientIp(req)
+  const { allowed } = await checkRateLimit(ip, { windowMinutes: 60, maxRequests: 6 })
+  if (!allowed) {
+    res.status(429).json({ error: 'Too many requests. Please try again later.' })
     return
   }
 

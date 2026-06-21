@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SONG_PRICE } from '../config'
+import { ORIGINAL_PRICE, SONG_PRICE } from '../config'
 
 const FAQS = [
   {
@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: 'How much does it cost?',
-    a: `It's a one-time payment of $${SONG_PRICE}, paid securely at checkout. No subscriptions, no hidden fees.`,
+    a: `It's a one-time payment of $${SONG_PRICE} (regularly $${ORIGINAL_PRICE} — today's discount applies automatically at checkout), paid securely. No subscriptions, no hidden fees.`,
   },
   {
     q: 'Can I give this as a gift?',

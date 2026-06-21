@@ -1,4 +1,4 @@
-import { BRAND_NAME } from '../config'
+import { BRAND_NAME, ORIGINAL_PRICE, SONG_PRICE } from '../config'
 import AudioTestimonial from './AudioTestimonial'
 import { TESTIMONIALS } from '../data/testimonials'
 
@@ -27,7 +27,11 @@ export default function Hero({ onStart }) {
         >
           Create My Song — Free Preview
         </button>
-        <p className="text-sm text-navy-400">Takes 2 minutes · You can tell it by voice</p>
+        <p className="text-sm text-navy-400">
+          Takes 2 minutes · Full song just{' '}
+          <span className="font-semibold text-navy-600">${SONG_PRICE}</span>{' '}
+          <span className="text-navy-300 line-through">${ORIGINAL_PRICE}</span> today
+        </p>
       </div>
 
       <div className="mt-10 w-full max-w-sm text-left">

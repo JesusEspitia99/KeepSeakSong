@@ -1,3 +1,5 @@
+import { DISCOUNT_PERCENT, ORIGINAL_PRICE, SONG_PRICE } from '../config'
+
 export default function FinalCTA({ onStart }) {
   return (
     <section className="mx-auto max-w-2xl px-6 py-16 text-center">
@@ -6,6 +8,10 @@ export default function FinalCTA({ onStart }) {
       </h2>
       <p className="mt-3 text-navy-400">
         Tell us their story today — your song is just a few minutes away.
+      </p>
+      <p className="mt-2 text-sm font-medium text-gold-600">
+        {DISCOUNT_PERCENT}% off today: <span className="line-through">${ORIGINAL_PRICE}</span>{' '}
+        <span className="text-base font-semibold text-navy-800">${SONG_PRICE}</span>
       </p>
 
       <button
@@ -18,7 +24,7 @@ export default function FinalCTA({ onStart }) {
       <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-navy-400">
         <span>🔒 7-day money-back guarantee</span>
         <span>🎙️ Tell it in your own voice</span>
-        <span>⏳ Only a few spots left today</span>
+        <span>⏳ Limited spots available today</span>
       </div>
     </section>
   )
