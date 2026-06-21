@@ -56,6 +56,17 @@ export default function PreCheckout({ data }) {
     }
   }, [data])
 
+  useEffect(() => {
+    fetch('/api/submit-quiz', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch(() => {
+      // Saving is best-effort — never block the user's experience on it.
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   function handleCheckout() {
     trackEvent('InitiateCheckout', { value: SONG_PRICE, currency: 'USD', content_name: 'keepsakesong_quiz' })
     window.location.href = HOTMART_CHECKOUT_URL
