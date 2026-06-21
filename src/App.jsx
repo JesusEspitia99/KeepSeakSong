@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Hero from './components/Hero'
+import ProblemMechanism from './components/ProblemMechanism'
 import HowItWorks from './components/HowItWorks'
 import FeaturedSongs from './components/FeaturedSongs'
 import CustomerTestimonials from './components/CustomerTestimonials'
@@ -68,6 +69,7 @@ function Quiz() {
       {stage === 'hero' && (
         <>
           <Hero onStart={startQuiz} />
+          <ProblemMechanism />
           <HowItWorks />
           <FeaturedSongs />
           <CustomerTestimonials />

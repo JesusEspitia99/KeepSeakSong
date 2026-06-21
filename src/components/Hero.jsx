@@ -8,7 +8,7 @@ export default function Hero({ onStart }) {
   return (
     <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-16 pb-10 text-center">
       <span className="mb-5 rounded-full bg-gold-50 px-4 py-1 text-sm font-medium text-gold-600">
-        {BRAND_NAME} · The #1 Story-to-Song Platform
+        {BRAND_NAME} · Built From Real Stories, Not Templates
       </span>
 
       <h1 className="font-serif text-4xl font-medium leading-tight text-navy-900 md:text-5xl">
@@ -42,9 +42,9 @@ export default function Hero({ onStart }) {
       </div>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-navy-400">
-        <span>⭐ Loved by happy customers</span>
+        <span>✨ No two songs are ever the same</span>
         <span>🎙️ Tell it in your own voice</span>
-        <span>🔒 Satisfaction guaranteed</span>
+        <span>🔒 7-day money-back guarantee</span>
       </div>
     </section>
   )

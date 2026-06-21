@@ -3,24 +3,24 @@ import { ORIGINAL_PRICE, SONG_PRICE } from '../config'
 
 const FAQS = [
   {
-    q: 'What if I don\'t like the song?',
-    a: `We offer a 7-day money-back guarantee. If you're not happy with it, we'll make it right or refund you — no questions asked.`,
+    q: "What if I don't like the song?",
+    a: `Then we haven't done our job, and we'll fix it. You have 7 days to tell us it's not right — we'll revise it or refund you completely, no questions asked. We'd rather lose the sale than have you settle for a song that doesn't feel like them.`,
   },
   {
     q: 'How long does it take?',
-    a: 'Your draft lyric preview appears right after the quiz. The finished, fully produced song arrives by email shortly after.',
+    a: "You don't have to wait to feel something — your draft lyric preview shows up right after the quiz, built from the exact details you just shared. The finished, fully produced song lands in your inbox shortly after.",
   },
   {
     q: 'Do I have to record my voice?',
-    a: 'No — the microphone is just an easier way to tell your story if typing feels harder. Writing it out works exactly as well.',
+    a: "No. But some of the most moving lines in our songs came from someone just talking, no filter, no overthinking what to write. If typing feels easier, that works just as well — the story matters more than how you tell it.",
   },
   {
     q: 'How much does it cost?',
-    a: `It's a one-time payment of $${SONG_PRICE} (regularly $${ORIGINAL_PRICE} — today's discount applies automatically at checkout), paid securely. No subscriptions, no hidden fees.`,
+    a: `Today it's $${SONG_PRICE} instead of the usual $${ORIGINAL_PRICE} — one payment, nothing recurring, no hidden fees. For something they'll keep forever, most people tell us it felt like a steal.`,
   },
   {
     q: 'Can I give this as a gift?',
-    a: "Absolutely — most of our songs are gifts. You can write the story yourself, and we'll deliver it in time to surprise them.",
+    a: "It's the best gift you'll give this year, and most of our songs are exactly that. You write the story, we keep it a surprise — just tell us when you need it by and we'll have it ready in time.",
   },
 ]
 
