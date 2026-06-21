@@ -12,6 +12,9 @@ import Step3Special from './components/steps/Step3Special'
 import Step4Memories from './components/steps/Step4Memories'
 import Step5Heart from './components/steps/Step5Heart'
 import PreCheckout from './components/PreCheckout'
+import Footer from './components/Footer'
+import Terms from './components/legal/Terms'
+import Privacy from './components/legal/Privacy'
 import { trackEvent } from './lib/pixel'
 
 const TOTAL_STEPS = 5
@@ -31,6 +34,15 @@ const INITIAL_DATA = {
 }
 
 export default function App() {
+  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+
+  if (path === '/terms') return <Terms />
+  if (path === '/privacy') return <Privacy />
+
+  return <Quiz />
+}
+
+function Quiz() {
   const [stage, setStage] = useState('hero') // hero | 1-5 | precheckout
   const [data, setData] = useState(INITIAL_DATA)
 
@@ -75,6 +87,8 @@ export default function App() {
       )}
 
       {stage === 'precheckout' && <PreCheckout data={data} />}
+
+      {stage === 'hero' && <Footer />}
     </div>
   )
 }

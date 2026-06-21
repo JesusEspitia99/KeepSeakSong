@@ -3,3 +3,5 @@ export const HOTMART_CHECKOUT_URL = 'https://pay.hotmart.com/B106141218N?checkou
 export const BRAND_NAME = 'KeepsakeSong'
 
 export const SONG_PRICE = 79
+
+export const CONTACT_EMAIL = 'keepseaksong@gmail.com'

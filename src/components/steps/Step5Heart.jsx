@@ -48,7 +48,15 @@ export default function Step5Heart({ data, update, onNext }) {
           onChange={(e) => setAgreed(e.target.checked)}
           className="mt-0.5"
         />
-        I agree to the Terms and Privacy Policy.
+        I agree to the{' '}
+        <a href="/terms" target="_blank" rel="noopener" className="text-gold-600 underline">
+          Terms
+        </a>{' '}
+        and{' '}
+        <a href="/privacy" target="_blank" rel="noopener" className="text-gold-600 underline">
+          Privacy Policy
+        </a>
+        .
       </label>
 
       <button
