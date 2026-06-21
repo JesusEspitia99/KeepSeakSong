@@ -1,13 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
-import { HOTMART_CHECKOUT_URL } from '../config'
+import { useEffect, useState } from 'react'
+import { HOTMART_CHECKOUT_URL, SONG_PRICE } from '../config'
 import { trackEvent } from '../lib/pixel'
 import AudioTestimonial from './AudioTestimonial'
-
-const TESTIMONIALS = [
-  { title: "Everything You Didn't Say", name: 'For Dad', src: '/songs/dad.mp3' },
-  { title: 'My First Best Friend', name: 'For a sibling', src: '/songs/first-best-friend.mp3' },
-  { title: 'For My Mother, With Everything', name: 'For Mom', src: '/songs/rosa.mp3' },
-]
+import { TESTIMONIALS } from '../data/testimonials'
 
 function buildLyricSnippet(data) {
   const name = data.nickname?.trim() || data.name || 'you'
@@ -27,15 +22,42 @@ function buildLyricSnippet(data) {
 
 export default function PreCheckout({ data }) {
   const [generating, setGenerating] = useState(true)
-  const lyricLines = useMemo(() => buildLyricSnippet(data), [data])
+  const [lyricLines, setLyricLines] = useState([])
 
   useEffect(() => {
-    const t = setTimeout(() => setGenerating(false), 1800)
-    return () => clearTimeout(t)
-  }, [])
+    let cancelled = false
+
+    async function generate() {
+      try {
+        const response = await fetch('/api/generate-lyrics', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+        if (!response.ok) throw new Error('API failed')
+        const result = await response.json()
+        if (!cancelled && result.lines?.length) {
+          setLyricLines(result.lines)
+          setGenerating(false)
+          return
+        }
+        throw new Error('Empty response')
+      } catch {
+        if (!cancelled) {
+          setLyricLines(buildLyricSnippet(data))
+          setGenerating(false)
+        }
+      }
+    }
+
+    generate()
+    return () => {
+      cancelled = true
+    }
+  }, [data])
 
   function handleCheckout() {
-    trackEvent('InitiateCheckout', { value: 0, currency: 'USD', content_name: 'keepsakesong_quiz' })
+    trackEvent('InitiateCheckout', { value: SONG_PRICE, currency: 'USD', content_name: 'keepsakesong_quiz' })
     window.location.href = HOTMART_CHECKOUT_URL
   }
 
@@ -85,12 +107,15 @@ export default function PreCheckout({ data }) {
         <span>❤️ Love it, or your money back</span>
       </div>
 
+      <p className="mt-6 text-2xl font-semibold text-navy-900">${SONG_PRICE}</p>
+      <p className="text-xs text-navy-300">One-time payment, paid securely at checkout</p>
+
       <button
         onClick={handleCheckout}
         disabled={generating}
-        className="mt-8 w-full rounded-full bg-gradient-to-r from-navy-700 to-gold-500 py-4 text-lg font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-4 w-full rounded-full bg-gradient-to-r from-navy-700 to-gold-500 py-4 text-lg font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
       >
-        I want the full song
+        I want the full song — ${SONG_PRICE}
       </button>
       <p className="mt-2 text-xs text-navy-300">Only a few spots left today</p>
     </div>

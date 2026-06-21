@@ -7,7 +7,7 @@ function formatTime(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
-export default function AudioTestimonial({ title, name, src }) {
+export default function AudioTestimonial({ title, name, src, story }) {
   const audioRef = useRef(null)
   const [playing, setPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -64,6 +64,7 @@ export default function AudioTestimonial({ title, name, src }) {
       <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-navy-100">
         <div className="h-full rounded-full bg-gold-400 transition-all" style={{ width: `${pct}%` }} />
       </div>
+      {story && <p className="mt-2 text-xs leading-relaxed text-navy-400">{story}</p>}
       <audio ref={audioRef} src={src} preload="metadata" />
     </div>
   )

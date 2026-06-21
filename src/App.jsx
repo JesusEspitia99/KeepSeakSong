@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import Hero from './components/Hero'
+import HowItWorks from './components/HowItWorks'
+import FeaturedSongs from './components/FeaturedSongs'
+import FAQ from './components/FAQ'
+import FinalCTA from './components/FinalCTA'
 import ProgressBar from './components/ProgressBar'
 import Step1Recipient from './components/steps/Step1Recipient'
 import Step2Style from './components/steps/Step2Style'
@@ -46,7 +50,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-navy-50 via-white to-white">
-      {stage === 'hero' && <Hero onStart={startQuiz} />}
+      {stage === 'hero' && (
+        <>
+          <Hero onStart={startQuiz} />
+          <HowItWorks />
+          <FeaturedSongs />
+          <FAQ />
+          <FinalCTA onStart={startQuiz} />
+        </>
+      )}
 
       {typeof stage === 'number' && (
         <div className="px-6 py-10">
