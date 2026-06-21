@@ -14,6 +14,8 @@ import Step4Memories from './components/steps/Step4Memories'
 import Step5Heart from './components/steps/Step5Heart'
 import PreCheckout from './components/PreCheckout'
 import UrgencyBanner from './components/UrgencyBanner'
+import StickyCTA from './components/StickyCTA'
+import ExitIntentOffer from './components/ExitIntentOffer'
 import Footer from './components/Footer'
 import Terms from './components/legal/Terms'
 import Privacy from './components/legal/Privacy'
@@ -75,6 +77,8 @@ function Quiz() {
           <CustomerTestimonials />
           <FAQ />
           <FinalCTA onStart={startQuiz} />
+          <StickyCTA onStart={startQuiz} />
+          <ExitIntentOffer onStart={startQuiz} />
         </>
       )}
 
