@@ -12,7 +12,7 @@ export default function Hero({ onStart }) {
       </span>
 
       <h1 className="font-serif text-4xl font-medium leading-tight text-navy-900 md:text-5xl">
-        "I never thought hearing my own story, sung back to me, would make me cry like that."
+        "They never thought hearing our story, turned into a song, would make them cry like that."
       </h1>
 
       <p className="mt-5 max-w-xl text-lg text-navy-500">
