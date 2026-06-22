@@ -16,7 +16,7 @@ export default function Hero({ onStart }) {
       </h1>
 
       <p className="mt-5 max-w-xl text-lg text-navy-500">
-        Tell us their story — written or in your own voice — and we'll turn it into a one-of-a-kind
+        Tell us your story — written or in your own voice — and we'll turn it into a one-of-a-kind
         song made just for them.
       </p>
 
