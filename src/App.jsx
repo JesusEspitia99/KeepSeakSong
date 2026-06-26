@@ -84,7 +84,11 @@ function Quiz() {
 
       {typeof stage === 'number' && (
         <div className="px-6 py-10">
-          <ProgressBar step={stage} total={TOTAL_STEPS} />
+          <ProgressBar
+            step={stage}
+            total={TOTAL_STEPS}
+            onBack={() => goToStep(stage === 1 ? 'hero' : stage - 1)}
+          />
 
           {stage === 1 && <Step1Recipient {...stepProps} onNext={() => goToStep(2)} />}
           {stage === 2 && <Step2Style {...stepProps} onNext={() => goToStep(3)} />}

@@ -1,7 +1,15 @@
-export default function ProgressBar({ step, total }) {
+export default function ProgressBar({ step, total, onBack }) {
   const pct = Math.round((step / total) * 100)
   return (
     <div className="mx-auto mb-8 w-full max-w-md">
+      {onBack && (
+        <button
+          onClick={onBack}
+          className="mb-3 flex items-center gap-1 text-sm font-medium text-navy-400 hover:text-navy-600"
+        >
+          ← Back
+        </button>
+      )}
       <div className="mb-2 flex justify-between text-xs font-medium text-navy-400">
         <span>Step {step} of {total}</span>
         <span>{pct}% complete</span>
