@@ -13,9 +13,7 @@ export default function Step4Memories({ data, update, onNext }) {
       <div className="mt-4">
         <VoiceTextarea
           value={data.memories}
-          onChange={(updater) =>
-            update({ memories: typeof updater === 'function' ? updater(data.memories) : updater })
-          }
+          onChange={(memories) => update({ memories })}
           placeholder="That trip where we got lost / the time when..."
           rows={5}
         />

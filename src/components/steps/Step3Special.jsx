@@ -17,9 +17,7 @@ export default function Step3Special({ data, update, onNext }) {
       <div className="mt-4">
         <VoiceTextarea
           value={data.special}
-          onChange={(updater) =>
-            update({ special: typeof updater === 'function' ? updater(data.special) : updater })
-          }
+          onChange={(special) => update({ special })}
           placeholder="Their infectious laugh / how they always know the right thing to say..."
           rows={5}
         />

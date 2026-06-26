@@ -4,6 +4,11 @@ export default function VoiceTextarea({ value, onChange, placeholder, rows = 4 }
   const [listening, setListening] = useState(false)
   const [supported, setSupported] = useState(false)
   const recognitionRef = useRef(null)
+  const valueRef = useRef(value)
+  const onChangeRef = useRef(onChange)
+
+  valueRef.current = value
+  onChangeRef.current = onChange
 
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
@@ -22,14 +27,14 @@ export default function VoiceTextarea({ value, onChange, placeholder, rows = 4 }
       for (let i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript
       }
-      onChange((prev) => (prev ? prev.trim() + ' ' + transcript : transcript))
+      const prev = valueRef.current
+      onChangeRef.current(prev ? prev.trim() + ' ' + transcript : transcript)
     }
     recognition.onend = () => setListening(false)
     recognition.onerror = () => setListening(false)
 
     recognitionRef.current = recognition
     return () => recognition.stop()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   function toggleListening() {
