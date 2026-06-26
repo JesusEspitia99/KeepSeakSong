@@ -1,25 +1,41 @@
-const VIBES = ['Sweet', 'Emotional', 'Funny', 'Upbeat', 'Calm', 'Romantic']
+const VIBES = [
+  { value: 'Sweet', emoji: '🥰' },
+  { value: 'Emotional', emoji: '🥹' },
+  { value: 'Funny', emoji: '😂' },
+  { value: 'Upbeat', emoji: '🎉' },
+  { value: 'Calm', emoji: '🌙' },
+  { value: 'Romantic', emoji: '💕' },
+]
 const GENRES = ['Pop', 'Country', 'Rock', 'R&B', 'Ballad', 'Acoustic', 'Bachata']
-const VOICES = ['Female', 'Male', 'No preference']
+const VOICES = [
+  { value: 'Female', emoji: '👩‍🎤' },
+  { value: 'Male', emoji: '🧑‍🎤' },
+  { value: 'No preference', emoji: '🎤' },
+]
 
 function PillGroup({ title, options, value, onSelect }) {
   return (
     <div className="mt-6">
       <h3 className="mb-2 text-sm font-medium text-navy-500">{title}</h3>
       <div className="flex flex-wrap gap-2">
-        {options.map((opt) => (
-          <button
-            key={opt}
-            onClick={() => onSelect(opt)}
-            className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-              value === opt
-                ? 'border-gold-400 bg-gold-50 text-gold-700 ring-2 ring-gold-200'
-                : 'border-navy-100 bg-white text-navy-600 hover:border-gold-200'
-            }`}
-          >
-            {opt}
-          </button>
-        ))}
+        {options.map((opt) => {
+          const optValue = typeof opt === 'string' ? opt : opt.value
+          const emoji = typeof opt === 'string' ? null : opt.emoji
+          return (
+            <button
+              key={optValue}
+              onClick={() => onSelect(optValue)}
+              className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                value === optValue
+                  ? 'border-gold-400 bg-gold-50 text-gold-700 ring-2 ring-gold-200'
+                  : 'border-navy-100 bg-white text-navy-600 hover:border-gold-200'
+              }`}
+            >
+              {emoji && <span className="mr-1">{emoji}</span>}
+              {optValue}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

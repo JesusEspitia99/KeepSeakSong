@@ -1,7 +1,10 @@
 import VoiceTextarea from '../VoiceTextarea'
 
+const MIN_LENGTH = 20
+
 export default function Step3Special({ data, update, onNext }) {
-  const canContinue = data.special.trim().length > 0
+  const remaining = MIN_LENGTH - data.special.trim().length
+  const canContinue = remaining <= 0
 
   return (
     <div className="mx-auto max-w-xl text-left">
@@ -21,6 +24,11 @@ export default function Step3Special({ data, update, onNext }) {
           placeholder="Their infectious laugh / how they always know the right thing to say..."
           rows={5}
         />
+        {remaining > 0 && (
+          <p className="mt-1 text-right text-xs text-navy-300">
+            Add {remaining} more character{remaining === 1 ? '' : 's'} to continue
+          </p>
+        )}
       </div>
 
       <button
