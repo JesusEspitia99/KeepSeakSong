@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .env*
 .abacusai
+/VIDEOS
 
 # Editor directories and files
 .vscode/*
