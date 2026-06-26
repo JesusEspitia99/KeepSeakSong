@@ -159,10 +159,15 @@ export default async function handler(req, res) {
     const text = data?.content?.[0]?.text?.trim() || ''
     const fullSong = extractJson(text)
 
-    // The free preview only shows ~25-30 seconds of the song — verse 1, capped to 6 lines.
-    const previewLines = (fullSong.lyrics?.verse1 || []).slice(0, 6)
+    // The free preview shows Verse 1, Chorus, and Verse 2 — enough to hook them, not the whole song.
+    const lyrics = fullSong.lyrics || {}
+    const preview = [
+      { section: 'Verse 1', lines: lyrics.verse1 || [] },
+      { section: 'Chorus', lines: lyrics.chorus || [] },
+      { section: 'Verse 2', lines: lyrics.verse2 || [] },
+    ]
 
-    res.status(200).json({ lines: previewLines, fullSong })
+    res.status(200).json({ preview, fullSong })
   } catch (err) {
     res.status(500).json({ error: 'Failed to generate lyrics', details: err.message })
   }

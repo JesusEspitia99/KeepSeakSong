@@ -8,27 +8,44 @@ function buildLyricSnippet(data) {
   const name = data.nickname?.trim() || data.name || 'you'
   const trait = data.special?.trim().split(/[.,/]/)[0]?.trim()
   const vibe = (data.vibe || 'this').toLowerCase()
-
-  const line1 = `${name}, they say your name like a quiet prayer,`
-  const line2 = trait
-    ? `${trait.charAt(0).toUpperCase() + trait.slice(1)} — that's the line we couldn't leave out.`
-    : `Every little thing about you, written down with care.`
   const article = /^[aeiou]/i.test(vibe) ? 'an' : 'a'
-  const line3 = `This is ${article} ${vibe} song, just for ${name},`
-  const line4 = `built from the moments only we would understand.`
 
-  return [line1, line2, line3, line4]
+  return [
+    {
+      section: 'Verse 1',
+      lines: [
+        `${name}, they say your name like a quiet prayer,`,
+        trait
+          ? `${trait.charAt(0).toUpperCase() + trait.slice(1)} — that's the line we couldn't leave out.`
+          : `Every little thing about you, written down with care.`,
+      ],
+    },
+    {
+      section: 'Chorus',
+      lines: [
+        `This is ${article} ${vibe} song, just for ${name},`,
+        `built from the moments only we would understand.`,
+      ],
+    },
+    {
+      section: 'Verse 2',
+      lines: [
+        `${name}, every word here was chosen with you in mind,`,
+        `a story worth keeping, set to a melody you'll find.`,
+      ],
+    },
+  ]
 }
 
 export default function PreCheckout({ data }) {
   const [generating, setGenerating] = useState(true)
-  const [lyricLines, setLyricLines] = useState([])
+  const [preview, setPreview] = useState([])
 
   useEffect(() => {
     let cancelled = false
 
     async function generateAndSave() {
-      let previewLines
+      let previewSections
       let fullSong = null
 
       try {
@@ -39,22 +56,22 @@ export default function PreCheckout({ data }) {
         })
         if (!response.ok) throw new Error('API failed')
         const result = await response.json()
-        if (!result.lines?.length) throw new Error('Empty response')
-        previewLines = result.lines
+        if (!result.preview?.length) throw new Error('Empty response')
+        previewSections = result.preview
         fullSong = result.fullSong || null
       } catch {
-        previewLines = buildLyricSnippet(data)
+        previewSections = buildLyricSnippet(data)
       }
 
       if (!cancelled) {
-        setLyricLines(previewLines)
+        setPreview(previewSections)
         setGenerating(false)
       }
 
       fetch('/api/submit-quiz', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...data, generatedLyrics: previewLines, fullSong }),
+        body: JSON.stringify({ ...data, generatedLyrics: previewSections, fullSong }),
       }).catch(() => {
         // Saving is best-effort — never block the user's experience on it.
       })
@@ -84,15 +101,22 @@ export default function PreCheckout({ data }) {
             <p className="text-sm font-medium text-gold-700">Writing the first lines…</p>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-2 py-2 text-left">
-            <span className="mb-1 text-2xl">📝</span>
-            <p className="mx-auto mb-2 text-center text-xs font-medium uppercase tracking-wide text-gold-600">
+          <div className="flex flex-col items-center gap-4 py-2 text-left">
+            <span className="text-2xl">📝</span>
+            <p className="mx-auto -mt-2 text-center text-xs font-medium uppercase tracking-wide text-gold-600">
               Draft lyric preview
             </p>
-            {lyricLines.map((line, i) => (
-              <p key={i} className="font-serif text-base italic text-navy-800">
-                {line}
-              </p>
+            {preview.map((section) => (
+              <div key={section.section} className="w-full">
+                <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-navy-300">
+                  {section.section}
+                </p>
+                {section.lines.map((line, i) => (
+                  <p key={i} className="text-center font-serif text-base italic text-navy-800">
+                    {line}
+                  </p>
+                ))}
+              </div>
             ))}
           </div>
         )}
