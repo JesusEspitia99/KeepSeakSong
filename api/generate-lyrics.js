@@ -142,7 +142,6 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'claude-opus-4-8',
         max_tokens: 2000,
-        temperature: 0.9,
         system: SYSTEM_PROMPT,
         messages: [
           { role: 'user', content: buildUserMessage({ displayName, recipient, vibe, genre, special, memories, heartMessage }) },
