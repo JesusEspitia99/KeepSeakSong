@@ -27,7 +27,10 @@ export default function PreCheckout({ data }) {
   useEffect(() => {
     let cancelled = false
 
-    async function generate() {
+    async function generateAndSave() {
+      let previewLines
+      let fullSong = null
+
       try {
         const response = await fetch('/api/generate-lyrics', {
           method: 'POST',
@@ -36,36 +39,32 @@ export default function PreCheckout({ data }) {
         })
         if (!response.ok) throw new Error('API failed')
         const result = await response.json()
-        if (!cancelled && result.lines?.length) {
-          setLyricLines(result.lines)
-          setGenerating(false)
-          return
-        }
-        throw new Error('Empty response')
+        if (!result.lines?.length) throw new Error('Empty response')
+        previewLines = result.lines
+        fullSong = result.fullSong || null
       } catch {
-        if (!cancelled) {
-          setLyricLines(buildLyricSnippet(data))
-          setGenerating(false)
-        }
+        previewLines = buildLyricSnippet(data)
       }
+
+      if (!cancelled) {
+        setLyricLines(previewLines)
+        setGenerating(false)
+      }
+
+      fetch('/api/submit-quiz', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ...data, generatedLyrics: previewLines, fullSong }),
+      }).catch(() => {
+        // Saving is best-effort — never block the user's experience on it.
+      })
     }
 
-    generate()
+    generateAndSave()
     return () => {
       cancelled = true
     }
   }, [data])
-
-  useEffect(() => {
-    fetch('/api/submit-quiz', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(data),
-    }).catch(() => {
-      // Saving is best-effort — never block the user's experience on it.
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   function handleCheckout() {
     trackEvent('InitiateCheckout', { value: SONG_PRICE, currency: 'USD', content_name: 'keepsakesong_quiz' })

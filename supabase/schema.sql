@@ -12,8 +12,12 @@ create table if not exists quiz_responses (
   memories text,
   heart_message text,
   email text,
-  generated_lyrics text[]
+  generated_lyrics text[],
+  full_song jsonb
 );
+
+-- Run this if quiz_responses already existed before full_song was added:
+-- alter table quiz_responses add column if not exists full_song jsonb;
 
 create index if not exists quiz_responses_email_idx on quiz_responses (email);
 create index if not exists quiz_responses_created_at_idx on quiz_responses (created_at);

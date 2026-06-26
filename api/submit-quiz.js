@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   const {
     recipient, name, pronunciation, nickname, vibe, genre, voice,
-    special, memories, heartMessage, email, generatedLyrics,
+    special, memories, heartMessage, email, generatedLyrics, fullSong,
   } = req.body || {}
 
   if (!email) {
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
       recipient, name, pronunciation, nickname, vibe, genre, voice,
       special, memories, heart_message: heartMessage, email,
       generated_lyrics: generatedLyrics,
+      full_song: fullSong,
     })
     .select('id')
     .single()
