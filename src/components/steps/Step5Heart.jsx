@@ -10,7 +10,7 @@ export default function Step5Heart({ data, update, onNext }) {
   const canContinue = data.heartMessage.trim().length > 0 && isValidEmail(data.email) && agreed
 
   function handleSubmit() {
-    trackEvent('Lead', { content_name: 'quiz_completed', recipient: data.recipient })
+    trackEvent('Lead', { content_name: 'quiz_completed', recipient: data.recipient, email: data.email })
     onNext()
   }
 

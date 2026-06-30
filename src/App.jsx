@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Hero from './components/Hero'
 import ProblemMechanism from './components/ProblemMechanism'
 import HowItWorks from './components/HowItWorks'
@@ -49,6 +49,10 @@ export default function App() {
 function Quiz() {
   const [stage, setStage] = useState('hero') // hero | 1-5 | precheckout
   const [data, setData] = useState(INITIAL_DATA)
+
+  useEffect(() => {
+    trackEvent('PageView')
+  }, [])
 
   function update(patch) {
     setData((prev) => ({ ...prev, ...patch }))

@@ -84,7 +84,12 @@ export default function PreCheckout({ data }) {
   }, [data])
 
   function handleCheckout() {
-    trackEvent('InitiateCheckout', { value: SONG_PRICE, currency: 'USD', content_name: 'keepsakesong_quiz' })
+    trackEvent('InitiateCheckout', {
+      value: SONG_PRICE,
+      currency: 'USD',
+      content_name: 'keepsakesong_quiz',
+      email: data.email,
+    })
     window.location.href = HOTMART_CHECKOUT_URL
   }
 
