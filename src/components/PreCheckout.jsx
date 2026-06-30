@@ -90,7 +90,9 @@ export default function PreCheckout({ data }) {
       content_name: 'keepsakesong_quiz',
       email: data.email,
     })
-    window.location.href = HOTMART_CHECKOUT_URL
+    const checkoutUrl = new URL(HOTMART_CHECKOUT_URL)
+    if (data.email) checkoutUrl.searchParams.set('email', data.email)
+    window.location.href = checkoutUrl.toString()
   }
 
   return (

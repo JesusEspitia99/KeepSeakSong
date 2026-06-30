@@ -7,7 +7,7 @@ function isValidEmail(email) {
 
 export default function Step5Heart({ data, update, onNext }) {
   const [agreed, setAgreed] = useState(false)
-  const canContinue = data.heartMessage.trim().length > 0 && isValidEmail(data.email) && agreed
+  const canContinue = isValidEmail(data.email) && agreed
 
   function handleSubmit() {
     trackEvent('Lead', { content_name: 'quiz_completed', recipient: data.recipient, email: data.email })
@@ -18,7 +18,8 @@ export default function Step5Heart({ data, update, onNext }) {
     <div className="mx-auto max-w-xl text-left">
       <h2 className="text-center text-2xl font-medium text-navy-900">A message from your heart</h2>
       <p className="mt-1 text-center text-navy-400">
-        How do you want {data.name || 'them'} to feel when they hear this?
+        How do you want {data.name || 'them'} to feel when they hear this?{' '}
+        <span className="text-navy-300">(optional)</span>
       </p>
 
       <textarea
