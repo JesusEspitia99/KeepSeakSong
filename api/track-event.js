@@ -14,8 +14,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    await sendCapiEvent(req, { eventName, eventId, eventSourceUrl, email, value, currency, customData, fbp, fbc })
-    res.status(200).json({ ok: true })
+    const result = await sendCapiEvent(req, { eventName, eventId, eventSourceUrl, email, value, currency, customData, fbp, fbc })
+    res.status(200).json({ ok: true, skipped: !!result.skipped })
   } catch (err) {
     // Tracking must never break the user's experience — log and respond 200.
     res.status(200).json({ ok: false, error: err.message })
