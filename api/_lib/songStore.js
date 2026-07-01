@@ -34,10 +34,13 @@ export async function storeFullSong(supabase, { taskId, audioUrl, duration }) {
     .upload(path, buffer, { contentType: 'audio/mpeg', upsert: true })
   if (error) throw new Error(`Failed to store song: ${error.message}`)
 
+  // upsert (not update) so the row is persisted even if the initial saveTask failed.
   await supabase
     .from('songs')
-    .update({ storage_path: path, file_size: buffer.length, duration, ready: true })
-    .eq('task_id', taskId)
+    .upsert(
+      { task_id: taskId, storage_path: path, file_size: buffer.length, duration, ready: true },
+      { onConflict: 'task_id' }
+    )
 
   return { path, fileSize: buffer.length }
 }

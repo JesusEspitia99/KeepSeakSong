@@ -2,6 +2,8 @@ import { checkRateLimit, getClientIp } from '../_lib/rateLimit.js'
 import { buildLyricsString, buildStyle, voiceToGender, startGeneration } from '../_lib/suno.js'
 import { getSupabase, saveTask } from '../_lib/songStore.js'
 
+export const maxDuration = 60
+
 function siteUrl(req) {
   if (process.env.SITE_URL) return process.env.SITE_URL
   const host = req.headers['x-forwarded-host'] || req.headers.host
