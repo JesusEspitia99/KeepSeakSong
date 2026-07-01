@@ -9,8 +9,7 @@ import FinalCTA from './components/FinalCTA'
 import ProgressBar from './components/ProgressBar'
 import Step1Recipient from './components/steps/Step1Recipient'
 import Step2Style from './components/steps/Step2Style'
-import Step3Special from './components/steps/Step3Special'
-import Step4Memories from './components/steps/Step4Memories'
+import Step3Story from './components/steps/Step3Story'
 import Step5Heart from './components/steps/Step5Heart'
 import PreCheckout from './components/PreCheckout'
 import UrgencyBanner from './components/UrgencyBanner'
@@ -21,7 +20,7 @@ import Terms from './components/legal/Terms'
 import Privacy from './components/legal/Privacy'
 import { trackEvent } from './lib/pixel'
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 4
 
 const INITIAL_DATA = {
   recipient: '',
@@ -96,9 +95,8 @@ function Quiz() {
 
           {stage === 1 && <Step1Recipient {...stepProps} onNext={() => goToStep(2)} />}
           {stage === 2 && <Step2Style {...stepProps} onNext={() => goToStep(3)} />}
-          {stage === 3 && <Step3Special {...stepProps} onNext={() => goToStep(4)} />}
-          {stage === 4 && <Step4Memories {...stepProps} onNext={() => goToStep(5)} />}
-          {stage === 5 && <Step5Heart {...stepProps} onNext={() => goToStep('precheckout')} />}
+          {stage === 3 && <Step3Story {...stepProps} onNext={() => goToStep(4)} />}
+          {stage === 4 && <Step5Heart {...stepProps} onNext={() => goToStep('precheckout')} />}
         </div>
       )}
 
