@@ -41,7 +41,13 @@ create table if not exists songs (
   file_size bigint,
   duration numeric,
   ready boolean not null default false,
+  full_song jsonb,
+  preview_lyrics jsonb,
   created_at timestamptz not null default now()
 );
 
 create index if not exists songs_email_idx on songs (email);
+
+-- Run these if the songs table already existed before full_song/preview_lyrics were added:
+-- alter table songs add column if not exists full_song jsonb;
+-- alter table songs add column if not exists preview_lyrics jsonb;

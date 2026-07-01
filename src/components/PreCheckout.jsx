@@ -4,29 +4,15 @@ import { trackEvent } from '../lib/pixel'
 import AudioTestimonial from './AudioTestimonial'
 import { TESTIMONIALS } from '../data/testimonials'
 
-function buildLyricSnippet(data) {
+// Generic, template-only teaser shown if the server couldn't produce the song at all.
+// Contains no real generated lyrics, so nothing sensitive is ever exposed.
+function templatePreview(data) {
   const name = data.nickname?.trim() || data.name || 'you'
-  const trait = data.special?.trim().split(/[.,/]/)[0]?.trim()
   const vibe = (data.vibe || 'this').toLowerCase()
   const article = /^[aeiou]/i.test(vibe) ? 'an' : 'a'
-
   return [
-    {
-      section: 'Verse 1',
-      lines: [
-        `${name}, they say your name like a quiet prayer,`,
-        trait
-          ? `${trait.charAt(0).toUpperCase() + trait.slice(1)} — that's the line we couldn't leave out.`
-          : `Every little thing about you, written down with care.`,
-      ],
-    },
-    {
-      section: 'Chorus',
-      lines: [
-        `This is ${article} ${vibe} song, just for ${name},`,
-        `built from the moments only we would understand.`,
-      ],
-    },
+    { section: 'Verse 1', lines: [`${name}, this is where your story starts,`, `every little detail, written from the heart.`] },
+    { section: 'Chorus', lines: [`And this is ${article} ${vibe} song, just for ${name}…`], partial: true },
   ]
 }
 
@@ -42,10 +28,14 @@ export default function PreCheckout({ data }) {
   const [phase, setPhase] = useState('preparing') // preparing | ready | fallback
   const [progress, setProgress] = useState(6)
   const [previewUrl, setPreviewUrl] = useState(null)
-  const [fallbackLyrics, setFallbackLyrics] = useState([])
+  const [previewLyrics, setPreviewLyrics] = useState([])
+  const [activeLine, setActiveLine] = useState(-1)
+  const audioRef = useRef(null)
   const cancelledRef = useRef(false)
 
-  // Preparation-bar ticker: eases toward 92% while we wait on Suno, then jumps to 100 on ready.
+  // Flat, ordered list of the visible lines — used for the karaoke-style highlight.
+  const flatLines = previewLyrics.flatMap((s) => s.lines)
+
   useEffect(() => {
     if (phase !== 'preparing') return
     const id = setInterval(() => {
@@ -58,57 +48,31 @@ export default function PreCheckout({ data }) {
     cancelledRef.current = false
 
     async function run() {
-      // 1) Lyrics (Claude) — also our text fallback if the audio path fails.
-      let fullSong = null
-      let textPreview = buildLyricSnippet(data)
+      // Ask the server to write + generate the song. It returns ONLY the 45s preview
+      // lyrics — the full song is written and stored server-side and never sent here.
+      let taskId = null
       try {
-        const res = await fetch('/api/generate-lyrics', {
+        const res = await fetch('/api/song/start', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify(data),
         })
         if (res.ok) {
           const result = await res.json()
-          if (result.preview?.length) textPreview = result.preview
-          fullSong = result.fullSong || null
+          if (result.previewLyrics?.length) setPreviewLyrics(result.previewLyrics)
+          else setPreviewLyrics(templatePreview(data))
+          taskId = result.taskId || null
+        } else {
+          setPreviewLyrics(templatePreview(data))
         }
       } catch {
-        // keep template fallback
+        setPreviewLyrics(templatePreview(data))
       }
-      setFallbackLyrics(textPreview)
 
-      // Persist the quiz + full song (best-effort, never blocks the experience).
-      fetch('/api/submit-quiz', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ...data, generatedLyrics: textPreview, fullSong }),
-      }).catch(() => {})
-
-      // 2) Kick off the real Suno generation.
-      if (!fullSong) return finishFallback()
-      let taskId
-      try {
-        const res = await fetch('/api/song/start', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            fullSong,
-            vibe: data.vibe,
-            genre: data.genre,
-            voice: data.voice,
-            name: data.name,
-            email: data.email,
-          }),
-        })
-        if (!res.ok) return finishFallback()
-        taskId = (await res.json()).taskId
-      } catch {
-        return finishFallback()
-      }
       if (!taskId) return finishFallback()
 
-      // 3) Poll until the preview is ready.
-      const deadline = Date.now() + 7 * 60 * 1000 // long songs can take a few minutes to render
+      // Poll until the audio preview is ready (long songs can take a few minutes to render).
+      const deadline = Date.now() + 7 * 60 * 1000
       while (!cancelledRef.current && Date.now() < deadline) {
         await new Promise((r) => setTimeout(r, 4000))
         if (cancelledRef.current) return
@@ -143,6 +107,15 @@ export default function PreCheckout({ data }) {
     }
   }, [data])
 
+  // Karaoke-style highlight: advance through the visible lines as the 45s preview plays.
+  function handleTimeUpdate() {
+    const el = audioRef.current
+    if (!el || !flatLines.length) return
+    const total = el.duration && isFinite(el.duration) ? el.duration : 45
+    const idx = Math.min(flatLines.length - 1, Math.floor((el.currentTime / total) * flatLines.length))
+    setActiveLine(idx)
+  }
+
   function handleCheckout() {
     trackEvent('InitiateCheckout', {
       value: SONG_PRICE,
@@ -156,6 +129,44 @@ export default function PreCheckout({ data }) {
   }
 
   const prepMessage = PREP_MESSAGES[Math.min(PREP_MESSAGES.length - 1, Math.floor((progress / 100) * PREP_MESSAGES.length))]
+
+  // Renders the visible lyric lines with the active line highlighted during playback.
+  function LyricLines() {
+    let running = -1
+    return (
+      <div className="w-full space-y-3">
+        {previewLyrics.map((section) => (
+          <div key={section.section}>
+            <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-navy-300">
+              {section.section}
+            </p>
+            {section.lines.map((line, i) => {
+              running += 1
+              const isActive = running === activeLine
+              return (
+                <p
+                  key={i}
+                  className={`text-center font-serif text-base transition-colors duration-300 ${
+                    isActive ? 'font-medium text-gold-600' : 'text-navy-800'
+                  } ${section.partial ? 'italic' : ''}`}
+                >
+                  {line}
+                  {section.partial ? ' …' : ''}
+                </p>
+              )
+            })}
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const LockMessage = () => (
+    <p className="mx-auto mt-4 max-w-sm rounded-xl bg-navy-50 px-4 py-3 text-center text-sm text-navy-500">
+      🔒 Unlock the full song to hear how it ends — including the chorus, the bridge, and the
+      final message.
+    </p>
+  )
 
   return (
     <div className="mx-auto max-w-xl px-6 py-10 text-center">
@@ -176,7 +187,7 @@ export default function PreCheckout({ data }) {
               />
             </div>
             <p className="mt-3 text-xs text-navy-400">
-              This usually takes under a minute — we're recording a real, original song, not a template.
+              This takes about a minute — we're recording a real, original song, not a template.
             </p>
           </div>
         )}
@@ -187,33 +198,30 @@ export default function PreCheckout({ data }) {
             <p className="text-xs font-medium uppercase tracking-wide text-gold-600">
               45-second preview
             </p>
-            <audio controls autoPlay src={previewUrl} className="w-full" controlsList="nodownload noplaybackrate">
+            <audio
+              ref={audioRef}
+              controls
+              autoPlay
+              src={previewUrl}
+              onTimeUpdate={handleTimeUpdate}
+              className="w-full"
+              controlsList="nodownload noplaybackrate"
+            >
               Your browser doesn't support audio playback.
             </audio>
-            <p className="text-xs text-navy-400">
-              This is the opening of the song. Unlock the full track below.
-            </p>
+            <LyricLines />
+            <LockMessage />
           </div>
         )}
 
         {phase === 'fallback' && (
-          <div className="flex flex-col items-center gap-3 py-2 text-left">
+          <div className="flex flex-col items-center gap-3 py-2">
             <span className="text-2xl">📝</span>
-            <p className="mx-auto text-center text-xs font-medium uppercase tracking-wide text-gold-600">
-              Draft lyric preview
+            <p className="text-xs font-medium uppercase tracking-wide text-gold-600">
+              A first look at the lyrics
             </p>
-            {fallbackLyrics.map((section) => (
-              <div key={section.section} className="w-full">
-                <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-navy-300">
-                  {section.section}
-                </p>
-                {section.lines.map((line, i) => (
-                  <p key={i} className="text-center font-serif text-base italic text-navy-800">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            ))}
+            <LyricLines />
+            <LockMessage />
             <p className="mx-auto mt-1 text-center text-xs text-navy-400">
               Your full song is being produced and will arrive in your inbox.
             </p>

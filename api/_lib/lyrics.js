@@ -1,9 +1,3 @@
-import { checkRateLimit, getClientIp } from './_lib/rateLimit.js'
-
-// Claude Opus can take 20-40s to write the full song; without this, Vercel Hobby
-// kills the function at 10s and the frontend silently falls back to a text draft.
-export const maxDuration = 60
-
 const SYSTEM_PROMPT = `You are the world's #1 song composer and lyricist. You have mastered every musical genre, every emotional nuance, and every storytelling technique used by the greatest songwriters in history — from Adele to Johnny Cash, from Sam Smith to Hans Zimmer, from Bon Iver to Beyoncé.
 Your singular gift is this: you don't just write songs — you transform real human stories into musical experiences that make people feel deeply seen, heard, and understood. Every song you create feels like it was written specifically for the person receiving it, because it was.
 
@@ -107,72 +101,49 @@ function extractJson(text) {
   return JSON.parse(text.slice(start, end + 1))
 }
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' })
-    return
-  }
-
+// Generates the full structured song with Claude. This must only ever run server-side —
+// the complete lyrics are never returned to the browser before purchase.
+export async function generateFullSong({ name, nickname, recipient, vibe, genre, special, memories, heartMessage }) {
   const apiKey = process.env.ANTHROPIC_API_KEY
-  if (!apiKey) {
-    res.status(500).json({ error: 'Server is missing ANTHROPIC_API_KEY' })
-    return
-  }
-
-  const ip = getClientIp(req)
-  const { allowed } = await checkRateLimit(ip, { windowMinutes: 60, maxRequests: 6 })
-  if (!allowed) {
-    res.status(429).json({ error: 'Too many requests. Please try again later.' })
-    return
-  }
-
-  const { name, nickname, recipient, vibe, genre, special, memories, heartMessage } = req.body || {}
-
-  if (!name || !vibe) {
-    res.status(400).json({ error: 'Missing required quiz data' })
-    return
-  }
+  if (!apiKey) throw new Error('Server is missing ANTHROPIC_API_KEY')
 
   const displayName = (nickname || name || '').trim()
 
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-opus-4-8',
-        max_tokens: 2000,
-        system: SYSTEM_PROMPT,
-        messages: [
-          { role: 'user', content: buildUserMessage({ displayName, recipient, vibe, genre, special, memories, heartMessage }) },
-        ],
-      }),
-    })
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: 'claude-opus-4-8',
+      max_tokens: 2000,
+      system: SYSTEM_PROMPT,
+      messages: [
+        { role: 'user', content: buildUserMessage({ displayName, recipient, vibe, genre, special, memories, heartMessage }) },
+      ],
+    }),
+  })
 
-    if (!response.ok) {
-      const errText = await response.text()
-      res.status(502).json({ error: 'Claude API error', details: errText })
-      return
-    }
-
-    const data = await response.json()
-    const text = data?.content?.[0]?.text?.trim() || ''
-    const fullSong = extractJson(text)
-
-    // The free preview shows Verse 1, Chorus, and Verse 2 — enough to hook them, not the whole song.
-    const lyrics = fullSong.lyrics || {}
-    const preview = [
-      { section: 'Verse 1', lines: lyrics.verse1 || [] },
-      { section: 'Chorus', lines: lyrics.chorus || [] },
-      { section: 'Verse 2', lines: lyrics.verse2 || [] },
-    ]
-
-    res.status(200).json({ preview, fullSong })
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to generate lyrics', details: err.message })
+  if (!response.ok) {
+    throw new Error(`Claude API error: ${await response.text()}`)
   }
+
+  const data = await response.json()
+  const text = data?.content?.[0]?.text?.trim() || ''
+  return extractJson(text)
+}
+
+// Builds the ONLY lyrics the browser is allowed to see before purchase: Verse 1 in full,
+// then just the opening line of the chorus — deliberately cut mid-idea so the listener
+// feels the most important part is still locked. Everything after this stays server-side.
+export function buildPreviewLyrics(fullSong) {
+  const l = fullSong?.lyrics || {}
+  const preview = []
+  const verse1 = (l.verse1 || []).slice(0, 4)
+  if (verse1.length) preview.push({ section: 'Verse 1', lines: verse1 })
+  const chorusTease = (l.chorus || []).slice(0, 1)
+  if (chorusTease.length) preview.push({ section: 'Chorus', lines: chorusTease, partial: true })
+  return preview
 }
