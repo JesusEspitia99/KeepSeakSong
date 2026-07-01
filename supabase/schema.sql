@@ -30,3 +30,18 @@ create table if not exists lyric_requests (
 );
 
 create index if not exists lyric_requests_ip_created_idx on lyric_requests (ip, created_at);
+
+-- Suno song generations. The full audio is stored in a PRIVATE storage bucket named
+-- "songs" (auto-created by the API on first use); only a 45s byte-slice is ever served
+-- to the browser, and the full track is delivered via signed URL after purchase.
+create table if not exists songs (
+  task_id text primary key,
+  email text,
+  storage_path text,
+  file_size bigint,
+  duration numeric,
+  ready boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists songs_email_idx on songs (email);
