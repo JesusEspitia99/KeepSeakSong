@@ -108,7 +108,7 @@ export default function PreCheckout({ data }) {
       if (!taskId) return finishFallback()
 
       // 3) Poll until the preview is ready.
-      const deadline = Date.now() + 4 * 60 * 1000 // give Suno up to 4 minutes
+      const deadline = Date.now() + 7 * 60 * 1000 // long songs can take a few minutes to render
       while (!cancelledRef.current && Date.now() < deadline) {
         await new Promise((r) => setTimeout(r, 4000))
         if (cancelledRef.current) return
