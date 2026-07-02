@@ -21,23 +21,37 @@ function fire(method, eventName, { email, value, currency, content_name, ...rest
     window.fbq(method, eventName, browserParams, { eventID: eventId })
   }
 
-  fetch('/api/track-event', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      eventName,
-      eventId,
-      eventSourceUrl: window.location.href,
-      email,
-      value,
-      currency,
-      customData: { content_name, ...rest },
-      fbp: getCookie('_fbp'),
-      fbc: getCookie('_fbc'),
-    }),
-  }).catch(() => {
-    // Server-side tracking is best-effort — never block the user's experience on it.
+  const payload = JSON.stringify({
+    eventName,
+    eventId,
+    eventSourceUrl: window.location.href,
+    email,
+    value,
+    currency,
+    customData: { content_name, ...rest },
+    fbp: getCookie('_fbp'),
+    fbc: getCookie('_fbc'),
   })
+
+  // Some callers (e.g. InitiateCheckout) fire this the instant before navigating
+  // away to an external checkout page. A plain fetch() gets cancelled by that page
+  // unload, silently dropping the server-side event. sendBeacon is built for exactly
+  // this — it's handed off to the browser to deliver even as the page tears down.
+  const sent =
+    typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function'
+      ? navigator.sendBeacon('/api/track-event', new Blob([payload], { type: 'application/json' }))
+      : false
+
+  if (!sent) {
+    fetch('/api/track-event', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: payload,
+      keepalive: true,
+    }).catch(() => {
+      // Server-side tracking is best-effort — never block the user's experience on it.
+    })
+  }
 }
 
 export function trackEvent(eventName, params) {
