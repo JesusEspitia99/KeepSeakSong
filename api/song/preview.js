@@ -2,7 +2,10 @@ import { getSupabase, getSong, downloadFromBucket } from '../_lib/songStore.js'
 
 export const maxDuration = 60
 
-const PREVIEW_SECONDS = 45
+// Suno tracks usually open with a few seconds of instrumental intro before the vocals
+// start, so 45s of raw audio often cuts off mid-chorus. 55s gives enough headroom for the
+// intro + Verse 1 + Chorus to actually finish playing within the preview clip.
+const PREVIEW_SECONDS = 55
 
 export default async function handler(req, res) {
   const taskId = req.query.taskId
@@ -26,7 +29,7 @@ export default async function handler(req, res) {
   try {
     const full = await downloadFromBucket(supabase, song.storage_path)
 
-    // Serve only the first ~45s worth of bytes. The remaining bytes of the song never leave
+    // Serve only the first ~55s worth of bytes. The remaining bytes of the song never leave
     // the server, so the full track cannot be recovered from the preview response.
     let previewBytes = full.length
     if (song.duration && song.duration > PREVIEW_SECONDS) {

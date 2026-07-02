@@ -12,7 +12,7 @@ function templatePreview(data) {
   const article = /^[aeiou]/i.test(vibe) ? 'an' : 'a'
   return [
     { section: 'Verse 1', lines: [`${name}, this is where your story starts,`, `every little detail, written from the heart.`] },
-    { section: 'Chorus', lines: [`And this is ${article} ${vibe} song, just for ${name}…`], partial: true },
+    { section: 'Chorus', lines: [`And this is ${article} ${vibe} song, just for ${name}.`] },
   ]
 }
 
@@ -29,12 +29,7 @@ export default function PreCheckout({ data }) {
   const [progress, setProgress] = useState(6)
   const [previewUrl, setPreviewUrl] = useState(null)
   const [previewLyrics, setPreviewLyrics] = useState([])
-  const [activeLine, setActiveLine] = useState(-1)
-  const audioRef = useRef(null)
   const cancelledRef = useRef(false)
-
-  // Flat, ordered list of the visible lines — used for the karaoke-style highlight.
-  const flatLines = previewLyrics.flatMap((s) => s.lines)
 
   useEffect(() => {
     if (phase !== 'preparing') return
@@ -48,8 +43,9 @@ export default function PreCheckout({ data }) {
     cancelledRef.current = false
 
     async function run() {
-      // Ask the server to write + generate the song. It returns ONLY the 45s preview
-      // lyrics — the full song is written and stored server-side and never sent here.
+      // Ask the server to write + generate the song. It returns ONLY the preview
+      // lyrics (Verse 1 + Chorus) — the full song is written and stored server-side
+      // and never sent here.
       let taskId = null
       try {
         const res = await fetch('/api/song/start', {
@@ -107,15 +103,6 @@ export default function PreCheckout({ data }) {
     }
   }, [data])
 
-  // Karaoke-style highlight: advance through the visible lines as the 45s preview plays.
-  function handleTimeUpdate() {
-    const el = audioRef.current
-    if (!el || !flatLines.length) return
-    const total = el.duration && isFinite(el.duration) ? el.duration : 45
-    const idx = Math.min(flatLines.length - 1, Math.floor((el.currentTime / total) * flatLines.length))
-    setActiveLine(idx)
-  }
-
   function handleCheckout() {
     trackEvent('InitiateCheckout', {
       value: SONG_PRICE,
@@ -130,9 +117,10 @@ export default function PreCheckout({ data }) {
 
   const prepMessage = PREP_MESSAGES[Math.min(PREP_MESSAGES.length - 1, Math.floor((progress / 100) * PREP_MESSAGES.length))]
 
-  // Renders the visible lyric lines with the active line highlighted during playback.
+  // Renders the visible lyric lines: Verse 1 and the Chorus, in full — this is what the
+  // audio preview actually covers. No line-by-line highlight: Suno doesn't give us
+  // per-line timestamps, so any "karaoke" sync would just be a rough, inaccurate guess.
   function LyricLines() {
-    let running = -1
     return (
       <div className="w-full space-y-3">
         {previewLyrics.map((section) => (
@@ -140,21 +128,11 @@ export default function PreCheckout({ data }) {
             <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wide text-navy-300">
               {section.section}
             </p>
-            {section.lines.map((line, i) => {
-              running += 1
-              const isActive = running === activeLine
-              return (
-                <p
-                  key={i}
-                  className={`text-center font-serif text-base transition-colors duration-300 ${
-                    isActive ? 'font-medium text-gold-600' : 'text-navy-800'
-                  } ${section.partial ? 'italic' : ''}`}
-                >
-                  {line}
-                  {section.partial ? ' …' : ''}
-                </p>
-              )
-            })}
+            {section.lines.map((line, i) => (
+              <p key={i} className="text-center font-serif text-base text-navy-800">
+                {line}
+              </p>
+            ))}
           </div>
         ))}
       </div>
@@ -163,8 +141,8 @@ export default function PreCheckout({ data }) {
 
   const LockMessage = () => (
     <p className="mx-auto mt-4 max-w-sm rounded-xl bg-navy-50 px-4 py-3 text-center text-sm text-navy-500">
-      🔒 Unlock the full song to hear how it ends — including the chorus, the bridge, and the
-      final message.
+      🔒 Unlock the full song to hear how it ends — including the second verse, the bridge, and
+      the final message.
     </p>
   )
 
@@ -196,14 +174,12 @@ export default function PreCheckout({ data }) {
           <div className="flex flex-col items-center gap-3 py-2">
             <span className="text-2xl">🎧</span>
             <p className="text-xs font-medium uppercase tracking-wide text-gold-600">
-              45-second preview
+              Song preview
             </p>
             <audio
-              ref={audioRef}
               controls
               autoPlay
               src={previewUrl}
-              onTimeUpdate={handleTimeUpdate}
               className="w-full"
               controlsList="nodownload noplaybackrate"
             >

@@ -135,15 +135,13 @@ export async function generateFullSong({ name, nickname, recipient, vibe, genre,
   return extractJson(text)
 }
 
-// Builds the ONLY lyrics the browser is allowed to see before purchase: Verse 1 in full,
-// then just the opening line of the chorus — deliberately cut mid-idea so the listener
-// feels the most important part is still locked. Everything after this stays server-side.
+// Builds the ONLY lyrics the browser is allowed to see before purchase: Verse 1 and the
+// Chorus, both in full — this is what the 45-55s audio preview actually covers. The bridge,
+// second verse, and final chorus/outro stay server-side and are what the lock message sells.
 export function buildPreviewLyrics(fullSong) {
   const l = fullSong?.lyrics || {}
   const preview = []
-  const verse1 = (l.verse1 || []).slice(0, 4)
-  if (verse1.length) preview.push({ section: 'Verse 1', lines: verse1 })
-  const chorusTease = (l.chorus || []).slice(0, 1)
-  if (chorusTease.length) preview.push({ section: 'Chorus', lines: chorusTease, partial: true })
+  if (l.verse1?.length) preview.push({ section: 'Verse 1', lines: l.verse1 })
+  if (l.chorus?.length) preview.push({ section: 'Chorus', lines: l.chorus })
   return preview
 }
